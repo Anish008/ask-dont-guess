@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 2 COMPLETE ✓
+Last updated: 2024-11-23, Phase 3 COMPLETE ✓
 
 ## Completed Features
 
@@ -45,13 +45,18 @@ Last updated: 2024-11-23, Phase 2 COMPLETE ✓
 - [x] Type check passes — `mypy` returns "Success: no issues found"
 - [x] Tests pass (26/26) with 89% coverage — All verification complete
 
-## Remaining Features (by Phase)
+### Phase 3 - Data Models & Interfaces ✓
+- [x] core/types.py with 20+ pydantic models (§4.1) — Query, Sample, ADGResult, all data structures
+- [x] core/errors.py with exception hierarchy — ADGError base, 15+ typed exceptions with codes/hints
+- [x] core/protocols.py with Protocol definitions — LLMBackend, NLIScorer, Method, SimulatedUser
+- [x] core/registry.py for backend/method registration — 4 registry classes with decorator support
+- [x] core/__init__.py exports — All types, errors, protocols, registries exported
+- [x] Tests written for all Phase 3 modules (63 tests) — test_types, test_errors, test_protocols, test_registry
+- [x] Lint passes — `ruff check` returns "All checks passed!"
+- [x] Type check passes — `mypy` returns "Success" (1 non-blocking psutil stub warning)
+- [x] Tests pass (89/89) with 94% coverage — All Phase 1-3 tests passing
 
-### Phase 3 - Data Models & Interfaces
-- [ ] core/types.py with all pydantic models (§4.1)
-- [ ] core/errors.py with exception hierarchy
-- [ ] Protocol definitions (LLMBackend, NLIScorer, Method, SimulatedUser)
-- [ ] Registry patterns for backends and methods
+## Remaining Features (by Phase)
 
 ### Phase 4 - LLM Inference
 - [ ] llm/base.py with LLMBackend protocol
@@ -145,12 +150,14 @@ Last updated: 2024-11-23, Phase 2 COMPLETE ✓
 |-------|-------|--------|--------|----------|---------|
 | 1 | Imports | 2 | 0 | 50% | `pytest tests/` |
 | 2 | Core + Config | 26 | 0 | 89% | `pytest tests/ --cov` |
+| 3 | Data Models & Interfaces | 63 | 0 | 94% | `pytest tests/ --cov` |
+| **Total** | **All** | **89** | **0** | **94%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
 
 ## Current Limitations
-- Phases 1-2 complete: environment and configuration ready
+- Phases 1-3 complete: environment, configuration, and data models ready
 - No models loaded yet (will be verified in Phase 4-5)
 - No dataset access yet (will be verified in Phase 11)
 - Uncalibrated decision thresholds (will be calibrated in Phase 7)
@@ -159,10 +166,13 @@ Last updated: 2024-11-23, Phase 2 COMPLETE ✓
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 2 completion
-2. Begin Phase 3: Data Models & Interfaces
-   - Create core/types.py with pydantic models for all data structures (§4.1)
-   - Create core/errors.py with exception hierarchy
-   - Define Protocol interfaces (LLMBackend, NLIScorer, Method, SimulatedUser)
-   - Implement registry patterns for backends and methods
-3. Proceed to Phase 4: LLM Inference (first model download)
+1. Git commit Phase 3 completion
+2. Begin Phase 4: LLM Inference (first model download)
+   - Create llm/base.py with LLMBackend protocol
+   - Implement llm/hf_backend.py (Transformers) with Qwen2.5-1.5B-Instruct
+   - Implement llm/mock_backend.py (deterministic test backend)
+   - Create llm/prompts/ with structured/plain templates
+   - Implement llm/parsing.py for interpretation/answer extraction
+   - Create sampling/sampler.py with seeded sampling logic
+   - Verify Qwen2.5-1.5B-Instruct model ID and config
+3. Proceed to Phase 5: NLI Inference (second model download)
