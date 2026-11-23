@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 3 COMPLETE ✓
+Last updated: 2024-11-23, Phase 4 COMPLETE ✓
 
 ## Completed Features
 
@@ -56,16 +56,19 @@ Last updated: 2024-11-23, Phase 3 COMPLETE ✓
 - [x] Type check passes — `mypy` returns "Success" (1 non-blocking psutil stub warning)
 - [x] Tests pass (89/89) with 94% coverage — All Phase 1-3 tests passing
 
-## Remaining Features (by Phase)
+### Phase 4 - LLM Inference ✓
+- [x] llm/prompts.py with structured/plain templates — format_structured_prompt, format_plain_prompt, format_clarification_prompt
+- [x] llm/parsing.py for output extraction — parse_structured_output with refusal/hedge detection
+- [x] llm/mock_backend.py (deterministic test backend) — Hash-based deterministic sampling, no model loading
+- [x] llm/hf_backend.py (Transformers backend) — HuggingFace models with fp16/4-bit quantization, tenacity retry
+- [x] sampling/sampler.py with seeded sampling — Seed derivation from query_id, delegates to LLMBackend
+- [x] llm/register.py for backend registration — Registers mock and hf backends
+- [x] Tests written for all Phase 4 modules (37 tests) — test_prompts, test_parsing, test_mock_backend, test_sampler
+- [x] Lint passes — `ruff check` returns "All checks passed!"
+- [x] Type check passes — `mypy` returns "Success: no issues found"
+- [x] Tests pass (126/126) with 85% coverage — All Phase 1-4 tests passing
 
-### Phase 4 - LLM Inference
-- [ ] llm/base.py with LLMBackend protocol
-- [ ] llm/hf_backend.py (Transformers)
-- [ ] llm/mock_backend.py (deterministic test backend)
-- [ ] llm/prompts/ directory with structured/plain templates
-- [ ] llm/parsing.py with interpretation/answer extraction
-- [ ] sampling/sampler.py with seeded sampling
-- [ ] TODO(verify): Qwen2.5-1.5B-Instruct model ID and config
+## Remaining Features (by Phase)
 
 ### Phase 5 - NLI Inference
 - [ ] nli/base.py with NLIScorer protocol
@@ -151,14 +154,16 @@ Last updated: 2024-11-23, Phase 3 COMPLETE ✓
 | 1 | Imports | 2 | 0 | 50% | `pytest tests/` |
 | 2 | Core + Config | 26 | 0 | 89% | `pytest tests/ --cov` |
 | 3 | Data Models & Interfaces | 63 | 0 | 94% | `pytest tests/ --cov` |
-| **Total** | **All** | **89** | **0** | **94%** | `pytest tests/ --cov` |
+| 4 | LLM Inference | 37 | 0 | 63% | `pytest tests/unit/llm tests/unit/sampling --cov` |
+| **Total** | **All** | **126** | **0** | **85%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
 
 ## Current Limitations
-- Phases 1-3 complete: environment, configuration, and data models ready
-- No models loaded yet (will be verified in Phase 4-5)
+- Phases 1-4 complete: environment, configuration, data models, and LLM inference ready
+- Real model testing pending (HF backend implemented, not yet tested with actual model download)
+- NLI scorer not yet implemented (will be in Phase 5)
 - No dataset access yet (will be verified in Phase 11)
 - Uncalibrated decision thresholds (will be calibrated in Phase 7)
 
@@ -166,13 +171,11 @@ Last updated: 2024-11-23, Phase 3 COMPLETE ✓
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 3 completion
-2. Begin Phase 4: LLM Inference (first model download)
-   - Create llm/base.py with LLMBackend protocol
-   - Implement llm/hf_backend.py (Transformers) with Qwen2.5-1.5B-Instruct
-   - Implement llm/mock_backend.py (deterministic test backend)
-   - Create llm/prompts/ with structured/plain templates
-   - Implement llm/parsing.py for interpretation/answer extraction
-   - Create sampling/sampler.py with seeded sampling logic
-   - Verify Qwen2.5-1.5B-Instruct model ID and config
-3. Proceed to Phase 5: NLI Inference (second model download)
+1. Git commit Phase 4 completion
+2. Begin Phase 5: NLI Inference (second model download)
+   - Implement nli/hf_nli.py (DeBERTa scorer) with microsoft/deberta-large-mnli
+   - Implement nli/mock_nli.py (rule-based test scorer)
+   - Create nli/register.py for NLI scorer registration
+   - Write comprehensive tests for NLI scoring
+   - Verify DeBERTa-MNLI model ID and label mapping
+3. Proceed to Phase 6: Semantic Clustering
