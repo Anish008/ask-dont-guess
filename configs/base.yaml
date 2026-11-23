@@ -1,0 +1,15 @@
+# Base configuration for Ask, Don't Guess
+# Full configuration will be implemented in Phase 2
+# See spec §7 for complete structure
+
+project:
+  name: ask-dont-guess
+  seed: 0
+  env: dev  # dev | prod
+
+# Model configurations will be loaded from configs/models/*.yaml
+# NLI configurations from configs/nli/*.yaml
+# Method configurations from configs/methods/*.yaml
+# Hardware configurations from configs/hardware/*.yaml
+
+# TODO(Phase 2): Implement full config structure per spec §7

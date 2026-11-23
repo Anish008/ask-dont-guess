@@ -1,0 +1,219 @@
+[project]
+name = "adg"
+version = "0.1.0"
+description = "Ask, Don't Guess: Training-free ambiguity detection for small LLMs"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "ADG Team", email = "team@example.com"}
+]
+keywords = ["nlp", "llm", "ambiguity", "clarification", "uncertainty"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core dependencies (always installed) - per spec §2.1
+dependencies = [
+    "torch>=2.3.0",
+    "transformers>=4.45.0",
+    "accelerate>=0.20.0",
+    "datasets>=2.14.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "structlog>=23.0.0",
+    "tenacity>=8.2.0",
+    "diskcache>=5.6.0",
+    "matplotlib>=3.7.0",
+    "orjson>=3.9.0",
+]
+
+[project.optional-dependencies]
+# API serving - per spec §2.2
+serve = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.23.0",
+    "sse-starlette>=1.6.0",
+]
+
+# OpenAI API (GPT-4o-mini for simulated user, judge, reference) - per spec §2.3
+openai = [
+    "openai>=1.0.0",
+]
+
+# 4-bit quantization for CUDA GPUs - per spec §2.3
+quant = [
+    "bitsandbytes>=0.41.0",
+]
+
+# vLLM for high-throughput experiments (Linux + CUDA only) - per spec §2.3
+vllm = [
+    "vllm>=0.2.0",
+]
+
+# Experiment tracking - per spec §2.3
+tracking = [
+    "wandb>=0.15.0",
+]
+
+# Embedding similarity (ablation only) - per spec §2.3
+embed = [
+    "sentence-transformers>=2.2.0",
+]
+
+# DPO extension (stretch goal, Phase 19) - per spec §2.3
+dpo = [
+    "trl>=0.7.0",
+    "peft>=0.5.0",
+]
+
+# Development tools - per spec §2.3
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "hypothesis>=6.82.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.3.0",
+    "types-pyyaml>=6.0.0",
+    "httpx>=0.24.0",  # For FastAPI TestClient
+]
+
+[project.scripts]
+adg = "adg.cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/adg-team/ask-dont-guess"
+Documentation = "https://github.com/adg-team/ask-dont-guess/tree/main/docs"
+Repository = "https://github.com/adg-team/ask-dont-guess"
+Issues = "https://github.com/adg-team/ask-dont-guess/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adg"]
+
+# Ruff configuration - per spec §16.1
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-specific rules
+    "PL",   # pylint subset
+]
+ignore = [
+    "E501",   # line too long (formatter handles this)
+    "PLR0913",  # too many arguments (common in research code)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["PLR2004"]  # magic values ok in tests
+
+# Mypy configuration - per spec §16.1
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Not strict by default
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+
+# Strict mode for core algorithm modules - per spec §16.1
+[[tool.mypy.overrides]]
+module = [
+    "adg.core.*",
+    "adg.clustering.*",
+    "adg.decision.*",
+    "adg.evaluation.*",
+]
+disallow_untyped_defs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+
+# Ignore missing imports for optional dependencies
+[[tool.mypy.overrides]]
+module = [
+    "transformers.*",
+    "torch.*",
+    "datasets.*",
+    "wandb.*",
+    "mlflow.*",
+    "vllm.*",
+    "bitsandbytes.*",
+]
+ignore_missing_imports = true
+
+# Pytest configuration - per spec §16.1
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=adg",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests that load real models (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+    "e2e: marks end-to-end tests",
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/demo/*",
+]
+
+[tool.coverage.report]
+# Per spec §14: ≥85% for core algorithm, ≥70% overall
+# Phase 1: Minimal structure only, real target applies from Phase 3+
+fail_under = 30
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

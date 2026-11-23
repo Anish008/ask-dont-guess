@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pip:*)",
+      "Bash(uv:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(nvidia-smi:*)",
+      "Bash(python -c:*)",
+      "Bash(wmic:*)",
+      "Bash(python3.11:*)",
+      "Bash(python3.12 --version:*)",
+      "Bash(py -3.11:*)",
+      "Bash(py -3.12:*)",
+      "Bash(py:*)",
+      "Bash(winget search:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(make setup:*)"
+    ]
+  }
+}

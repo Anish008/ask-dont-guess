@@ -1,0 +1,52 @@
+# Pre-commit hooks for Ask, Don't Guess
+# Install with: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Ruff linter and formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.15
+    hooks:
+      # Linter
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      # Formatter
+      - id: ruff-format
+
+  # Mypy type checking (core modules only for speed)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        files: ^src/adg/core/
+        additional_dependencies:
+          - pydantic>=2.6.0
+          - types-pyyaml
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-added-large-files
+        args: [--maxkb=5000]  # Allow up to 5MB (config files, fixtures)
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # Detect secrets - disabled for Phase 1, re-enable in later phases
+  # - repo: https://github.com/Yelp/detect-secrets
+  #   rev: v1.4.0
+  #   hooks:
+  #     - id: detect-secrets
+  #       args: [--baseline, .secrets.baseline]
+  #       exclude: |
+  #         (?x)^(
+  #             .*\.lock|
+  #             uv\.lock|
+  #             package-lock\.json
+  #         )$
