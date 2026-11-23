@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 4 COMPLETE ✓
+Last updated: 2024-11-23, Phase 5 COMPLETE ✓
 
 ## Completed Features
 
@@ -68,13 +68,17 @@ Last updated: 2024-11-23, Phase 4 COMPLETE ✓
 - [x] Type check passes — `mypy` returns "Success: no issues found"
 - [x] Tests pass (126/126) with 85% coverage — All Phase 1-4 tests passing
 
-## Remaining Features (by Phase)
+### Phase 5 - NLI Inference ✓
+- [x] nli/mock_nli.py (rule-based test scorer) — Jaccard similarity-based mock scorer, no model loading
+- [x] nli/hf_nli.py (DeBERTa scorer) — Bidirectional entailment scoring with microsoft/deberta-large-mnli
+- [x] nli/register.py for NLI scorer registration — Registers mock and hf NLI scorers
+- [x] nli/__init__.py exports — HFNLIScorer, MockNLIScorer
+- [x] Tests written for all Phase 5 modules (18 tests) — test_mock_nli, test_hf_nli
+- [x] Lint passes — `ruff check` returns "All checks passed!"
+- [x] Type check passes — `mypy` returns "Success: no issues found"
+- [x] Tests pass (144/144) with 78% coverage — All Phase 1-5 tests passing
 
-### Phase 5 - NLI Inference
-- [ ] nli/base.py with NLIScorer protocol
-- [ ] nli/hf_nli.py (DeBERTa scorer)
-- [ ] nli/mock_nli.py (rule-based test scorer)
-- [ ] TODO(verify): DeBERTa-MNLI model ID and label mapping
+## Remaining Features (by Phase)
 
 ### Phase 6 - Semantic Clustering
 - [ ] clustering/relations.py (pairwise NLI, dedup, guard)
@@ -155,15 +159,16 @@ Last updated: 2024-11-23, Phase 4 COMPLETE ✓
 | 2 | Core + Config | 26 | 0 | 89% | `pytest tests/ --cov` |
 | 3 | Data Models & Interfaces | 63 | 0 | 94% | `pytest tests/ --cov` |
 | 4 | LLM Inference | 37 | 0 | 63% | `pytest tests/unit/llm tests/unit/sampling --cov` |
-| **Total** | **All** | **126** | **0** | **85%** | `pytest tests/ --cov` |
+| 5 | NLI Inference | 18 | 0 | 45% | `pytest tests/unit/nli --cov` |
+| **Total** | **All** | **144** | **0** | **78%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
 
 ## Current Limitations
-- Phases 1-4 complete: environment, configuration, data models, and LLM inference ready
-- Real model testing pending (HF backend implemented, not yet tested with actual model download)
-- NLI scorer not yet implemented (will be in Phase 5)
+- Phases 1-5 complete: environment, configuration, data models, LLM inference, and NLI inference ready
+- Real model testing pending (HF backends implemented, not yet tested with actual model downloads)
+- Clustering algorithms not yet implemented (will be in Phase 6)
 - No dataset access yet (will be verified in Phase 11)
 - Uncalibrated decision thresholds (will be calibrated in Phase 7)
 
@@ -171,11 +176,11 @@ Last updated: 2024-11-23, Phase 4 COMPLETE ✓
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 4 completion
-2. Begin Phase 5: NLI Inference (second model download)
-   - Implement nli/hf_nli.py (DeBERTa scorer) with microsoft/deberta-large-mnli
-   - Implement nli/mock_nli.py (rule-based test scorer)
-   - Create nli/register.py for NLI scorer registration
-   - Write comprehensive tests for NLI scoring
-   - Verify DeBERTa-MNLI model ID and label mapping
-3. Proceed to Phase 6: Semantic Clustering
+1. Git commit Phase 5 completion
+2. Begin Phase 6: Semantic Clustering
+   - Implement clustering/relations.py for pairwise NLI scoring with deduplication
+   - Implement clustering/algorithms.py with 3 clustering algorithms (greedy_bidirectional, agglomerative, connected_components)
+   - Implement clustering/features.py for ClusterFeatures computation
+   - Implement clustering/interpretation.py for interpretation channel (ER)
+   - Write comprehensive tests for clustering
+3. Proceed to Phase 7: Decision Engine
