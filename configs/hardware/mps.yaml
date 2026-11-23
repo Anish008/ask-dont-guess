@@ -1,0 +1,10 @@
+# Hardware configuration: Apple Silicon (MPS)
+# For: M1/M2/M3 Macs
+# Note: bitsandbytes not supported, vLLM not supported
+
+llm:
+  dtype: fp16  # MPS works well with fp16
+  load_in_4bit: false  # Not supported on MPS
+
+nli:
+  batch_size: 32

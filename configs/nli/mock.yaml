@@ -1,0 +1,13 @@
+# NLI Configuration: Mock backend
+# For testing without loading NLI model
+# Rule-based scorer (string matching, keyword pairs)
+
+model_id: mock-nli
+batch_size: 32
+max_length: 512
+
+# Mock NLI uses simple rules:
+# - Identical normalized text → entailment
+# - Known contradiction pairs → contradiction
+# - Otherwise → neutral
+# See src/adg/nli/mock_nli.py

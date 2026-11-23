@@ -1,0 +1,10 @@
+# Hardware configuration: 16GB+ VRAM GPU
+# Recommended for: RTX 3090/4090, A100, V100
+# Fits: Qwen2.5-3B + DeBERTa-large comfortably in fp16
+
+llm:
+  dtype: auto
+  load_in_4bit: false
+
+nli:
+  batch_size: 64  # Can handle larger batches

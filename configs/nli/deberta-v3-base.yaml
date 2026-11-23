@@ -1,0 +1,13 @@
+# NLI Configuration: DeBERTa-v3-base
+# Faster alternative for CPU development
+# Smaller model (~140M params vs 400M)
+# TODO(verify) in Phase 5
+
+model_id: microsoft/deberta-v3-base  # TODO(verify): Check if MNLI fine-tune available
+revision: main
+batch_size: 32
+max_length: 512
+
+# Memory estimate:
+# - fp16: ~600 MB
+# - fp32: ~1.2 GB

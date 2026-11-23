@@ -1,0 +1,10 @@
+# Hardware configuration: 8GB VRAM with 4-bit quantization
+# Use if fp16 causes OOM on 3B models
+# Requires: bitsandbytes (CUDA only, may not work on Windows)
+
+llm:
+  dtype: auto
+  load_in_4bit: true  # 3B model fits in ~2-3GB with 4-bit
+
+nli:
+  batch_size: 32

@@ -1,15 +1,120 @@
 # Base configuration for Ask, Don't Guess
-# Full configuration will be implemented in Phase 2
-# See spec §7 for complete structure
+# Per spec §7: All settings with defaults and comments
+# To override: create custom YAML, CLI flags (--set key=value), or env vars (ADG_*)
 
+# Project settings
 project:
   name: ask-dont-guess
-  seed: 0
-  env: dev  # dev | prod
+  seed: 0  # Global seed for reproducibility
+  env: dev  # dev | prod (affects logging format)
 
-# Model configurations will be loaded from configs/models/*.yaml
-# NLI configurations from configs/nli/*.yaml
-# Method configurations from configs/methods/*.yaml
-# Hardware configurations from configs/hardware/*.yaml
+# LLM configuration
+# References configs/models/{config}.yaml
+llm:
+  config: qwen2.5-1.5b  # qwen2.5-1.5b | qwen2.5-3b | mock
+  # Fields below are set by referenced config, can be overridden here
 
-# TODO(Phase 2): Implement full config structure per spec §7
+# NLI model configuration
+# References configs/nli/{config}.yaml
+nli:
+  config: deberta-large-mnli  # deberta-large-mnli | deberta-v3-base | mock
+  input_format: qa  # qa | answer_only | interpretation_answer
+  batch_size: 32
+
+# Sampling configuration (spec §4.3)
+sampling:
+  n_samples: 8  # Number of diverse answers to sample
+  temperature: 0.7
+  top_p: 0.9
+  max_new_tokens: 96
+  prompt: structured  # structured | plain
+  max_resample_attempts: 1
+  seed: 0  # Will be derived per query
+
+# Pairwise NLI relations (spec §4.4)
+relations:
+  equivalence: soft  # soft | strict
+  tau_eq: 0.5  # Threshold for semantic equivalence
+  entity_number_guard: true  # [ER] Cap equivalence for different numbers/entities
+  guard_cap: 0.2
+
+# Clustering configuration (spec §4.5)
+clustering:
+  algorithm: agglomerative  # agglomerative | greedy_bidirectional | connected_components
+  linkage: average  # average | complete (for agglomerative)
+  hedge_mode: split  # split | normal
+
+# Cluster features (spec §4.6)
+features:
+  mass: discrete  # discrete | likelihood
+  significance_rho: 0.25  # Significance threshold for clusters
+  gamma: 0.5  # Balance exponent in ask_score
+
+# Interpretation channel [ER] (spec §4.7)
+interpretation_channel:
+  enabled: true  # True for ADG+IC, False for ADG-Core
+  divergence: soft  # soft | hard
+
+# Conditional consistency verification [ER] (spec §4.8, default OFF)
+verification:
+  enabled: false  # Costly extra sampling step
+  top_k: 2
+  m_samples: 4
+
+# Decision engine (spec §4.9)
+decision:
+  mode: rules  # rules | learned
+  thresholds_file: null  # Path to calibrated thresholds (null = use defaults)
+  # UNCALIBRATED DEFAULTS (will be calibrated in Phase 7)
+  thresholds:
+    tau_refuse: 0.5
+    tau_answer: 0.7
+    tau_intra: 0.5
+    k_max: 4
+    tau_cov: 0.6
+    tau_sep: 0.3
+    tau_div: 0.2
+    tau_cc: 0.6
+    tau_hedge: 0.25
+
+# Clarifying question generation (spec §4.10)
+clarify:
+  mode: llm  # llm | template
+  max_options: 4
+  max_words: 40
+
+# Multi-turn conversation (spec §4.11)
+conversation:
+  max_clarification_turns: 2
+  on_unresolved: assume_and_answer  # assume_and_answer | abstain
+  session_ttl_s: 3600
+  reuse_cluster_answer: true
+
+# Disk cache (spec §3.4)
+cache:
+  enabled: true
+  dir: .cache/adg
+
+# Hardware configuration
+# References configs/hardware/{config}.yaml or auto-detects
+hardware:
+  config: auto  # auto | cpu | gpu_8gb | gpu_8gb_4bit | gpu_16gb | mps
+
+# API service configuration (spec §10.1)
+api:
+  host: 0.0.0.0
+  port: 8000
+  cors_origins:
+    - http://localhost:3000
+  max_query_chars: 2000
+
+# Logging configuration (spec §6.12)
+logging:
+  level: INFO  # DEBUG | INFO | WARNING | ERROR
+  json_format: false  # true for production (JSON lines), false for dev (pretty console)
+
+# Experiment tracking (spec §6.12)
+tracking:
+  backend: none  # none | wandb | mlflow
+  project: null
+  run_name: null

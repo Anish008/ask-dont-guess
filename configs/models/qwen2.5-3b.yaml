@@ -1,0 +1,15 @@
+# LLM Configuration: Qwen2.5-3B-Instruct
+# Secondary model (larger, may need 4-bit on 8GB GPU)
+# TODO(verify): Confirm all details when loading in Phase 4
+
+backend: hf
+model_id: Qwen/Qwen2.5-3B-Instruct  # TODO(verify)
+revision: main  # TODO(verify): Pin commit
+dtype: auto
+load_in_4bit: false  # Set true if OOM on 8GB
+max_context: 32768  # TODO(verify)
+trust_remote_code: false
+
+# Memory estimate (TODO(verify)):
+# - fp16: ~6-7 GB
+# - 4-bit: ~2-3 GB

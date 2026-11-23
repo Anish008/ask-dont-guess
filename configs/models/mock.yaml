@@ -1,0 +1,12 @@
+# LLM Configuration: Mock backend
+# For testing and development without loading real models
+# Deterministic, scripted outputs
+
+backend: mock
+model_id: mock-llm
+revision: none
+dtype: fp32
+max_context: 4096
+
+# Mock backend returns predefined outputs based on query patterns
+# See src/adg/llm/mock_backend.py for scripting details

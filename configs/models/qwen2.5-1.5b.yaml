@@ -1,0 +1,15 @@
+# LLM Configuration: Qwen2.5-1.5B-Instruct
+# Primary model for the project (fast, ungated, good quality)
+# TODO(verify): Confirm exact model_id when loading in Phase 4
+
+backend: hf
+model_id: Qwen/Qwen2.5-1.5B-Instruct  # TODO(verify) in Phase 4
+revision: main  # TODO(verify): Pin to specific commit for reproducibility
+dtype: auto  # Will be overridden by hardware config
+load_in_4bit: false
+max_context: 32768  # TODO(verify): Check actual context length
+trust_remote_code: false  # Qwen models don't require this
+
+# Memory estimate (TODO(verify) in Phase 4):
+# - fp16: ~3 GB
+# - 4-bit: ~1.5 GB

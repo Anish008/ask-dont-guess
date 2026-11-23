@@ -1,0 +1,10 @@
+# Hardware configuration: 8GB VRAM GPU
+# Recommended for: RTX 3060/3070, RTX 4060, RTX 5070 (8GB)
+# Fits: Qwen2.5-1.5B/3B in fp16, DeBERTa-large in fp16
+
+llm:
+  dtype: auto  # bf16 on Ampere+, fp16 on older
+  load_in_4bit: false  # Try fp16 first; switch to 4-bit if OOM
+
+nli:
+  batch_size: 32  # Good balance for 8GB

@@ -1,0 +1,9 @@
+# Hardware configuration: CPU-only
+# Use for development, testing, or when no GPU available
+
+llm:
+  dtype: fp32  # CPU works best with fp32
+  load_in_4bit: false  # 4-bit requires CUDA
+
+nli:
+  batch_size: 16  # Smaller batch for CPU

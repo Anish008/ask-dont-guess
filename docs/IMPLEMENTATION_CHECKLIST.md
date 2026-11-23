@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 1 COMPLETE ✓
+Last updated: 2024-11-23, Phase 2 COMPLETE ✓
 
 ## Completed Features
 
@@ -29,15 +29,23 @@ Last updated: 2024-11-23, Phase 1 COMPLETE ✓
 - [x] Type check passes — `mypy src/adg/core/` returns "Success: no issues found"
 - [x] Tests pass (2/2) with 50% coverage — `pytest` returns "2 passed"
 
-## Remaining Features (by Phase)
+### Phase 2 - Environment & Configuration ✓
+- [x] config/schema.py with pydantic Settings models — AppConfig with 15 nested configs
+- [x] config/loader.py with YAML loading and validation — Supports reference resolution, CLI overrides
+- [x] core/logging.py with structlog setup — JSON for prod, pretty console for dev
+- [x] core/seeding.py with reproducible seed derivation — Hash-based deterministic seeding
+- [x] core/hashing.py for content-addressed cache keys — Stable 16-char hex hashes
+- [x] core/device.py for hardware detection — CUDA/MPS/CPU with auto dtype selection
+- [x] Hardware configs created (cpu.yaml, gpu_8gb.yaml, gpu_8gb_4bit.yaml, gpu_16gb.yaml, mps.yaml)
+- [x] Model configs created (qwen2.5-1.5b.yaml, qwen2.5-3b.yaml, mock.yaml)
+- [x] NLI configs created (deberta-large-mnli.yaml, deberta-v3-base.yaml, mock.yaml)
+- [x] base.yaml updated with full config structure
+- [x] Tests written for all Phase 2 modules (26 tests)
+- [x] Lint passes — `ruff check` returns "All checks passed!"
+- [x] Type check passes — `mypy` returns "Success: no issues found"
+- [x] Tests pass (26/26) with 89% coverage — All verification complete
 
-### Phase 2 - Environment & Configuration
-- [ ] config/schema.py with pydantic Settings models
-- [ ] config/loader.py with YAML loading and validation
-- [ ] core/logging.py with structlog setup
-- [ ] core/seeding.py with reproducible seed derivation
-- [ ] core/hashing.py for content-addressed cache keys
-- [ ] core/device.py for hardware detection
+## Remaining Features (by Phase)
 
 ### Phase 3 - Data Models & Interfaces
 - [ ] core/types.py with all pydantic models (§4.1)
@@ -133,24 +141,28 @@ Last updated: 2024-11-23, Phase 1 COMPLETE ✓
 
 ## Tests
 
-| Suite | Passed | Failed | Skipped | Command |
-|-------|--------|--------|---------|---------|
-| (Phase 1 pending) | - | - | - | `make test` |
+| Phase | Suite | Passed | Failed | Coverage | Command |
+|-------|-------|--------|--------|----------|---------|
+| 1 | Imports | 2 | 0 | 50% | `pytest tests/` |
+| 2 | Core + Config | 26 | 0 | 89% | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
 
 ## Current Limitations
-- Phase 1 only: basic structure, no functionality yet
+- Phases 1-2 complete: environment and configuration ready
 - No models loaded yet (will be verified in Phase 4-5)
 - No dataset access yet (will be verified in Phase 11)
+- Uncalibrated decision thresholds (will be calibrated in Phase 7)
 
 ## Deviations from Spec
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Complete Phase 1: .editorconfig, pre-commit, CI, README, LICENSE, CHANGELOG
-2. Run `make setup` to install dependencies
-3. Verify all Phase 1 targets pass
-4. Git commit Phase 1 completion
-5. Begin Phase 2: Environment & Configuration
+1. Git commit Phase 2 completion
+2. Begin Phase 3: Data Models & Interfaces
+   - Create core/types.py with pydantic models for all data structures (§4.1)
+   - Create core/errors.py with exception hierarchy
+   - Define Protocol interfaces (LLMBackend, NLIScorer, Method, SimulatedUser)
+   - Implement registry patterns for backends and methods
+3. Proceed to Phase 4: LLM Inference (first model download)

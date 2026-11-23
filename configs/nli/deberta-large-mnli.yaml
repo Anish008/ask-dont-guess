@@ -1,0 +1,18 @@
+# NLI Configuration: DeBERTa-large-MNLI
+# Default NLI model for semantic clustering
+# Used in original semantic-entropy work (faithful baseline)
+# TODO(verify): Label mapping (id2label) in Phase 5
+
+model_id: microsoft/deberta-large-mnli  # TODO(verify)
+revision: main  # TODO(verify): Pin commit
+batch_size: 32
+max_length: 512
+
+# Memory estimate (TODO(verify)):
+# - fp16: ~1.6 GB (400M params)
+# - fp32: ~3.2 GB
+
+# TODO(verify) in Phase 5:
+# - config.id2label mapping
+# - Which index = entailment/neutral/contradiction
+# - Test on sanity pairs
