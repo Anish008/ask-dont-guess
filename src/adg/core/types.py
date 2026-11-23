@@ -222,6 +222,22 @@ class Action(str):
     ABSTAIN: str = "ABSTAIN"
 
 
+class Decision(BaseModel):
+    """Decision output from decision engine.
+
+    Args:
+        action: The chosen action (ANSWER, ASK, or ABSTAIN)
+        confidence: Confidence score for the chosen action
+        confidence_scores: Confidence scores for all actions
+        rule_name: Name of the rule that was matched
+    """
+
+    action: Literal["ANSWER", "ASK", "ABSTAIN"]
+    confidence: float
+    confidence_scores: dict[str, float]
+    rule_name: str
+
+
 class DecisionTrace(BaseModel):
     """Decision trace for explainability.
 
@@ -458,6 +474,7 @@ __all__ = [
     "ADGResult",
     # Decision
     "Action",
+    "Decision",
     "AggregateFeatures",
     "ClarifyingQuestion",
     # Clustering

@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 6 COMPLETE ✓
+Last updated: 2024-11-23, Phase 7 COMPLETE ✓
 
 ## Completed Features
 
@@ -86,6 +86,15 @@ Last updated: 2024-11-23, Phase 6 COMPLETE ✓
 - [x] clustering/__init__.py exports — All 4 main functions exported
 - [x] Tests written for all Phase 6 modules (33 tests) — test_relations, test_algorithms, test_features, test_interpretation
 - [x] Tests pass (177/177) with 55% coverage — All Phase 1-6 tests passing
+
+### Phase 7 - Decision Engine ✓
+- [x] decision/rules.py (ordered rule list with thresholds) — 4 rules: abstain_refusal, abstain_invalid, ask, answer
+- [x] decision/engine.py (DecisionEngine with confidence scores) — Applies rules, computes normalized confidence scores
+- [x] decision/calibration.py (threshold calibration via grid search) — ThresholdCalibrator with accuracy, precision, F1 metrics
+- [x] decision/__init__.py exports — All decision functions and classes exported
+- [x] core/types.py Decision model added — action, confidence, confidence_scores, rule_name
+- [x] Tests written for all Phase 7 modules (33 tests) — test_rules, test_engine, test_calibration
+- [x] Tests pass (210/210) with 36% coverage — All Phase 1-7 tests passing
 
 ## Remaining Features (by Phase)
 
