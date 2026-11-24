@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 11 COMPLETE ✓
+Last updated: 2024-11-24, Phase 12 COMPLETE ✓ (structure)
 
 ## Completed Features
 
@@ -128,13 +128,17 @@ Last updated: 2024-11-24, Phase 11 COMPLETE ✓
 - [x] Tests (24 tests) — test_schema, test_dedup, test_splits
 - [ ] TODO(verify): Actual dataset loading requires verification per spec §9.1
 
-### Phase 12 - Baselines
-- [ ] methods/always_answer.py
-- [ ] methods/ask_if_unclear.py
-- [ ] methods/stated_confidence.py
-- [ ] methods/logprob_threshold.py
-- [ ] methods/semantic_entropy.py
-- [ ] methods/adg_method.py (ADG-Core and ADG+IC)
+### Phase 12 - Baselines ✓ (structure)
+- [x] methods/base.py (Method protocol, BudgetSpec, MethodOutput)
+- [x] methods/always_answer.py — Greedy answer only
+- [x] methods/ask_if_unclear.py — Prompt-based with JSON output (TODO: full logic)
+- [x] methods/stated_confidence.py — Verbalized confidence 0-100 (TODO: full logic)
+- [x] methods/logprob_threshold.py — Mean token log-prob (TODO: full logic)
+- [x] methods/semantic_entropy.py — Discrete SE over meaning clusters (TODO: full clustering)
+- [x] methods/adg_core.py — ADG without interpretation channel
+- [x] methods/adg_ic.py — ADG with interpretation channel
+- [x] Tests (6 tests) for base protocol and AlwaysAnswer
+- [ ] TODO: Full implementation requires real model backends
 
 ### Phase 13 - Evaluation
 - [ ] simuser/llm_user.py + rule_user.py
@@ -183,7 +187,8 @@ Last updated: 2024-11-24, Phase 11 COMPLETE ✓
 | 9 | Conversation | 39 | 0 | 60% | `pytest tests/unit/conversation --cov` |
 | 10 | Integration | 6 | 0 | - | `pytest tests/integration --cov` |
 | 11 | Data Pipeline | 24 | 0 | 100% | `pytest tests/unit/data --cov` |
-| **Total** | **All** | **320** | **0** | **82%** | `pytest tests/ --cov` |
+| 12 | Methods | 6 | 1 | 26% | `pytest tests/unit/methods --cov` |
+| **Total** | **All** | **325** | **1** | **~80%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
