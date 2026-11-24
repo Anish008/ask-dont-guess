@@ -192,9 +192,11 @@ make clean
 
 - **[CLAUDE.md](CLAUDE.md)** - Guide for Claude Code (conventions, commands, rules)
 - **[docs/SPEC.md](docs/SPEC.md)** - Complete specification (read before coding!)
-- **[docs/algorithm.md](docs/algorithm.md)** - Core algorithm details
-- **[docs/reproduction.md](docs/reproduction.md)** - How to reproduce results
-- **[docs/limitations.md](docs/limitations.md)** - Known limitations
+- **[docs/algorithm.md](docs/algorithm.md)** - Core algorithm details and design
+- **[docs/reproduction.md](docs/reproduction.md)** - How to reproduce experiments
+- **[docs/limitations.md](docs/limitations.md)** - Known limitations and failure modes
+- **[docs/model_card.md](docs/model_card.md)** - Model card with intended use and performance
+- **[docs/data_card.md](docs/data_card.md)** - Dataset documentation
 - **[docs/IMPLEMENTATION_CHECKLIST.md](docs/IMPLEMENTATION_CHECKLIST.md)** - Progress tracker
 
 ---
@@ -232,4 +234,4 @@ For questions or issues, please open an issue on GitHub.
 
 ---
 
-**Status:** Phase 1 (Project Setup) ✓ | Phase 2 (Environment & Configuration) in progress
+**Status:** Phases 1-15 complete ✓ | Phase 16 (API & Frontend) optional | Phase 17 (Documentation) complete ✓

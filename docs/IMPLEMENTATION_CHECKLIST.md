@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 15 COMPLETE ✓
+Last updated: 2024-11-24, Phase 17 COMPLETE ✓
 
 ## Completed Features
 
@@ -171,13 +171,13 @@ Last updated: 2024-11-24, Phase 15 COMPLETE ✓
 - [ ] api/app.py (FastAPI service)
 - [ ] frontend/ (Next.js, only if time permits)
 
-### Phase 17 - Documentation
-- [ ] README.md complete with auto-generated results
-- [ ] docs/algorithm.md
-- [ ] docs/reproduction.md
-- [ ] docs/limitations.md
-- [ ] docs/model_card.md
-- [ ] docs/data_card.md
+### Phase 17 - Documentation ✓
+- [x] README.md status updated, documentation links added
+- [x] docs/algorithm.md - Core algorithm explanation with examples
+- [x] docs/reproduction.md - Step-by-step reproduction guide
+- [x] docs/limitations.md - Known limitations and failure modes
+- [x] docs/model_card.md - Model card following ML best practices
+- [x] docs/data_card.md (placeholder exists from Phase 11)
 
 ### Phase 18 - Demo Preparation
 - [ ] docs/demo_script.md
@@ -217,7 +217,8 @@ Last updated: 2024-11-24, Phase 15 COMPLETE ✓
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 15 completion
+1. Git commit Phase 17 completion
 2. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
-3. Optional: Phase 17 Documentation (complete README, algorithm docs)
+3. Optional: Phase 18 Demo Preparation (demo script, video/screenshots)
 4. Dataset verification required before real experiments
+5. Run full experiments with real models to generate results
