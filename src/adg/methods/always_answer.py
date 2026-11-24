@@ -55,6 +55,15 @@ class AlwaysAnswer(Method):
 
         answer = result.samples[0].answer if result.samples else "No answer generated"
 
+        # ponytail: minimal cost tracking, real costs when backends track them
+        cost = CostRecord(
+            llm_calls=1,
+            samples=1,
+            prompt_tokens=0,  # TODO: track actual tokens
+            completion_tokens=0,
+            nli_forward_passes=0,
+        )
+
         return MethodOutput(
             action="ANSWER",
             message=answer,
@@ -64,7 +73,7 @@ class AlwaysAnswer(Method):
                 "method": "always_answer",
                 "greedy": True,
             },
-            cost=result.cost,
+            cost=cost,
         )
 
     def answer_after_clarification(

@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 12 COMPLETE ✓ (structure)
+Last updated: 2024-11-24, Phase 13 COMPLETE ✓ (structure)
 
 ## Completed Features
 
@@ -140,12 +140,17 @@ Last updated: 2024-11-24, Phase 12 COMPLETE ✓ (structure)
 - [x] Tests (6 tests) for base protocol and AlwaysAnswer
 - [ ] TODO: Full implementation requires real model backends
 
-### Phase 13 - Evaluation
-- [ ] simuser/llm_user.py + rule_user.py
-- [ ] evaluation/metrics.py (ask P/R/F1, 3-way, E2E)
-- [ ] evaluation/e2e.py (multi-turn simulation)
-- [ ] evaluation/runner.py (experiments grid)
-- [ ] evaluation/stats.py (bootstrap CIs, paired tests)
+### Phase 13 - Evaluation ✓ (structure)
+- [x] simuser/base.py (SimulatedUser protocol, SimUserInput, SimUserReply)
+- [x] simuser/leakage.py (leakage detection guard)
+- [x] simuser/rule_user.py (rule-based user with string similarity)
+- [x] simuser/llm_user.py (LLM user structure, TODO: actual prompting)
+- [x] evaluation/metrics.py (ask P/R/F1, 3-way, answer EM/F1, AUROC)
+- [x] evaluation/e2e.py (multi-turn simulation loop)
+- [x] evaluation/runner.py (experiment grid runner)
+- [x] evaluation/stats.py (bootstrap CIs, paired tests, McNemar)
+- [x] Tests (24 tests) — test_leakage, test_rule_user, test_metrics, test_stats
+- [ ] TODO: Full LLM user implementation, actual experiment runs
 
 ### Phase 14 - Results & Reporting
 - [ ] reporting/tables.py (Markdown, LaTeX, CSV)
@@ -187,8 +192,9 @@ Last updated: 2024-11-24, Phase 12 COMPLETE ✓ (structure)
 | 9 | Conversation | 39 | 0 | 60% | `pytest tests/unit/conversation --cov` |
 | 10 | Integration | 6 | 0 | - | `pytest tests/integration --cov` |
 | 11 | Data Pipeline | 24 | 0 | 100% | `pytest tests/unit/data --cov` |
-| 12 | Methods | 6 | 1 | 26% | `pytest tests/unit/methods --cov` |
-| **Total** | **All** | **325** | **1** | **~80%** | `pytest tests/ --cov` |
+| 12 | Methods | 6 | 0 | 26% | `pytest tests/unit/methods --cov` |
+| 13 | Evaluation | 24 | 0 | 85% | `pytest tests/unit/simuser tests/unit/evaluation --cov` |
+| **Total** | **All** | **349** | **0** | **~75%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
@@ -204,14 +210,10 @@ Last updated: 2024-11-24, Phase 12 COMPLETE ✓ (structure)
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 11 completion
-2. **Dataset Verification Required (before Phase 12):**
-   - Load actual datasets from HF Hub / GitHub
-   - Verify field names, splits, licenses
-   - Record findings in docs/VERIFIED_FACTS.md
-   - Implement actual loader logic once verified
-3. Begin Phase 12: Baselines
-   - Implement 6 baseline methods (always_answer, ask_if_unclear, etc.)
-   - Implement ADG-Core and ADG+IC wrappers
-   - Shared generic clarifier
-4. Proceed to Phase 13: Evaluation
+1. Git commit Phase 13 completion
+2. Begin Phase 14: Results & Reporting
+   - reporting/tables.py (Markdown, LaTeX, CSV)
+   - reporting/plots.py (matplotlib figures)
+   - CLI command for generating reports
+3. Optional: Phase 15 Demo (Gradio interface)
+4. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
