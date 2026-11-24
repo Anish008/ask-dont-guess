@@ -61,7 +61,10 @@ make test
 ```bash
 # Run with mock backends (instant, deterministic)
 make demo-mock
+# Opens Gradio interface at http://localhost:7860
 ```
+
+**Demo Script:** See `docs/demo_script.md` for a complete 3-5 minute walkthrough demonstrating all three outcomes (ANSWER/ASK/ABSTAIN).
 
 ### Demo (Real Models)
 

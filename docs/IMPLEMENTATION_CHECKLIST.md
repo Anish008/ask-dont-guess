@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 16 COMPLETE ✓
+Last updated: 2024-11-24, Phase 18 COMPLETE ✓
 
 ## Completed Features
 
@@ -188,9 +188,19 @@ Last updated: 2024-11-24, Phase 16 COMPLETE ✓
 - [x] docs/model_card.md - Model card following ML best practices
 - [x] docs/data_card.md (placeholder exists from Phase 11)
 
-### Phase 18 - Demo Preparation
-- [ ] docs/demo_script.md
-- [ ] Demo video or screenshots
+### Phase 18 - Demo Preparation ✓
+- [x] docs/demo_script.md - Complete 3-5 minute timed demo script
+  * Introduction and three-outcomes overview
+  * Part 1: Clear question → ANSWER (France example)
+  * Part 2: Ambiguous question → ASK → Resolution (Georgia example)
+  * Part 3: Unknown question → ABSTAIN
+  * Timing breakdown, Q&A prep, troubleshooting
+- [x] docs/assets/screenshots/README.md - Screenshot capture guide
+  * 10 required screenshots documented
+  * File naming conventions
+  * Screenshot specifications
+  * Step-by-step capture instructions
+- [x] README.md updated with demo script reference
 
 ## Tests
 

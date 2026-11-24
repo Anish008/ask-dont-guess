@@ -1,0 +1,4 @@
+# This directory will contain demo screenshots
+# Screenshots should be generated locally by running:
+# make demo-mock
+# Then follow docs/assets/screenshots/README.md
