@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 10 COMPLETE ✓
+Last updated: 2024-11-24, Phase 11 COMPLETE ✓
 
 ## Completed Features
 
@@ -119,12 +119,14 @@ Last updated: 2024-11-24, Phase 10 COMPLETE ✓
 - [x] Smoke test script (scripts/smoke_test.py + smoke_test.sh) — Runs curated examples, logs to results/smoke/
 - [x] Tests pass (296/296) with 86% coverage — Full pipeline working with mocks
 
-### Phase 11 - Dataset Pipeline
-- [ ] data/loaders/ for AmbigQA, CLAMBER, NQ-open
-- [ ] data/schema.py (Example, GoldInterpretation models)
-- [ ] data/dedup.py (AmbigQA ⊂ NQ-open removal)
-- [ ] data/splits.py (deterministic dev/test splits)
-- [ ] TODO(verify): Dataset schemas and licenses
+### Phase 11 - Dataset Pipeline ✓
+- [x] data/schema.py (Example, GoldInterpretation models) — Unified schema for all datasets
+- [x] data/loaders/ (base, ambigqa, nq_open, clamber) — Loader structure with TODO(verify) placeholders
+- [x] data/dedup.py — Normalized question matching, AmbigQA ⊂ NQ-open filtering
+- [x] data/splits.py — Stratified calibration/test split, dev subsets
+- [x] docs/data_card.md — Placeholder card awaiting dataset verification
+- [x] Tests (24 tests) — test_schema, test_dedup, test_splits
+- [ ] TODO(verify): Actual dataset loading requires verification per spec §9.1
 
 ### Phase 12 - Baselines
 - [ ] methods/always_answer.py
@@ -180,7 +182,8 @@ Last updated: 2024-11-24, Phase 10 COMPLETE ✓
 | 8 | Clarification | 41 | 0 | 35% | `pytest tests/unit/clarify --cov` |
 | 9 | Conversation | 39 | 0 | 60% | `pytest tests/unit/conversation --cov` |
 | 10 | Integration | 6 | 0 | - | `pytest tests/integration --cov` |
-| **Total** | **All** | **296** | **0** | **86%** | `pytest tests/ --cov` |
+| 11 | Data Pipeline | 24 | 0 | 100% | `pytest tests/unit/data --cov` |
+| **Total** | **All** | **320** | **0** | **82%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
@@ -196,11 +199,14 @@ Last updated: 2024-11-24, Phase 10 COMPLETE ✓
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 10 completion
-2. Begin Phase 11: Dataset Pipeline
-   - Implement data/loaders/ for AmbigQA, CLAMBER, NQ-open
-   - Verify dataset schemas before implementation
-   - Implement deduplication (AmbigQA ⊂ NQ-open removal)
-   - Create deterministic splits
-   - Write data card with licenses
-3. Proceed to Phase 12: Baselines
+1. Git commit Phase 11 completion
+2. **Dataset Verification Required (before Phase 12):**
+   - Load actual datasets from HF Hub / GitHub
+   - Verify field names, splits, licenses
+   - Record findings in docs/VERIFIED_FACTS.md
+   - Implement actual loader logic once verified
+3. Begin Phase 12: Baselines
+   - Implement 6 baseline methods (always_answer, ask_if_unclear, etc.)
+   - Implement ADG-Core and ADG+IC wrappers
+   - Shared generic clarifier
+4. Proceed to Phase 13: Evaluation
