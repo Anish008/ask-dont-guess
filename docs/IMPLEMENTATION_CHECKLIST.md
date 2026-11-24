@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-23, Phase 7 COMPLETE ✓
+Last updated: 2024-11-24, Phase 8 COMPLETE ✓
 
 ## Completed Features
 
@@ -96,16 +96,15 @@ Last updated: 2024-11-23, Phase 7 COMPLETE ✓
 - [x] Tests written for all Phase 7 modules (33 tests) — test_rules, test_engine, test_calibration
 - [x] Tests pass (210/210) with 36% coverage — All Phase 1-7 tests passing
 
+### Phase 8 - Clarification Generation ✓
+- [x] clarify/generator.py (template + LLM modes) — QuestionGenerator with template and LLM-based generation
+- [x] clarify/interpretation.py (ReplyResolver) — Resolves user replies via numeric, exact, fuzzy, and fallback methods
+- [x] clarify/__init__.py exports — QuestionGenerator, ReplyResolver exported
+- [x] Tests written for all Phase 8 modules (41 tests) — test_generator, test_interpretation
+- [x] Tests pass (251/251) with 85% coverage — All Phase 1-8 tests passing
+
 ## Remaining Features (by Phase)
 
-### Phase 7 - Decision Engine
-- [ ] decision/rules.py (ordered rule list)
-- [ ] decision/engine.py (rule executor + learned mode)
-- [ ] decision/calibration.py (threshold search on dev split)
-
-### Phase 8 - Clarification
-- [ ] clarify/generator.py (template + LLM modes)
-- [ ] clarify/interpretation.py (ReplyResolver)
 
 ### Phase 9 - Conversation
 - [ ] conversation/state.py (SessionState, Turn models)
@@ -172,7 +171,10 @@ Last updated: 2024-11-23, Phase 7 COMPLETE ✓
 | 3 | Data Models & Interfaces | 63 | 0 | 94% | `pytest tests/ --cov` |
 | 4 | LLM Inference | 37 | 0 | 63% | `pytest tests/unit/llm tests/unit/sampling --cov` |
 | 5 | NLI Inference | 18 | 0 | 45% | `pytest tests/unit/nli --cov` |
-| **Total** | **All** | **144** | **0** | **78%** | `pytest tests/ --cov` |
+| 6 | Semantic Clustering | 33 | 0 | 55% | `pytest tests/unit/clustering --cov` |
+| 7 | Decision Engine | 33 | 0 | 36% | `pytest tests/unit/decision --cov` |
+| 8 | Clarification | 41 | 0 | 35% | `pytest tests/unit/clarify --cov` |
+| **Total** | **All** | **251** | **0** | **85%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)

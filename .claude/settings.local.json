@@ -26,7 +26,8 @@
       "Bash(python -m pytest:*)",
       "Bash(set:*)",
       "Bash(python -m ruff check:*)",
-      "Bash(python -m mypy:*)"
+      "Bash(python -m mypy:*)",
+      "Bash(where:*)"
     ]
   }
 }
