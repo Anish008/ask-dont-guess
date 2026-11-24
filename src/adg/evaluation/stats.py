@@ -143,6 +143,6 @@ def mcnemar_test(
 
 __all__ = [
     "bootstrap_confidence_interval",
-    "paired_bootstrap_test",
     "mcnemar_test",
+    "paired_bootstrap_test",
 ]

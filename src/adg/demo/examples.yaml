@@ -1,0 +1,78 @@
+# Curated demo examples for ADG
+# Per spec §10.2: At least 4 clear, 4 ambiguous, 4 unknown queries
+
+clear:
+  - id: clear_capital_france
+    question: "What is the capital of France?"
+    expected_action: ANSWER
+    description: "Unambiguous factual question"
+
+  - id: clear_math_simple
+    question: "What is 2 + 2?"
+    expected_action: ANSWER
+    description: "Simple arithmetic"
+
+  - id: clear_color_sky
+    question: "What color is the sky on a clear day?"
+    expected_action: ANSWER
+    description: "Common knowledge question"
+
+  - id: clear_largest_ocean
+    question: "What is the largest ocean on Earth?"
+    expected_action: ANSWER
+    description: "Geography factual question"
+
+ambiguous:
+  - id: ambiguous_georgia
+    question: "What is the capital of Georgia?"
+    expected_action: ASK
+    description: "US state vs country ambiguity"
+    interpretations:
+      - "Georgia the US state (Atlanta)"
+      - "Georgia the country (Tbilisi)"
+
+  - id: ambiguous_java
+    question: "How do I program in Java?"
+    expected_action: ASK
+    description: "Programming language vs island"
+    interpretations:
+      - "Java the programming language"
+      - "Java the Indonesian island"
+
+  - id: ambiguous_mercury
+    question: "Tell me about Mercury"
+    expected_action: ASK
+    description: "Planet vs element ambiguity"
+    interpretations:
+      - "Mercury the planet"
+      - "Mercury the chemical element"
+
+  - id: ambiguous_paris
+    question: "How far is Paris from here?"
+    expected_action: ASK
+    description: "Multiple cities named Paris"
+    interpretations:
+      - "Paris, France"
+      - "Paris, Texas"
+      - "Paris, Ontario"
+
+unknown:
+  - id: unknown_scattered
+    question: "What temperature was recorded at a private research station at 3:17 AM on March 15, 2019?"
+    expected_action: ABSTAIN
+    description: "Unanswerable - too specific/obscure"
+
+  - id: unknown_future
+    question: "What will be the winning lottery numbers next week?"
+    expected_action: ABSTAIN
+    description: "Unanswerable - future prediction"
+
+  - id: unknown_personal
+    question: "What is my grandmother's favorite color?"
+    expected_action: ABSTAIN
+    description: "Unanswerable - personal information"
+
+  - id: unknown_fictional
+    question: "What is the exact chemical composition of the potion Snape brewed in chapter 23?"
+    expected_action: ABSTAIN
+    description: "Unanswerable - fictional detail"

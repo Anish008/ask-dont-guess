@@ -8,9 +8,9 @@ from adg.simuser.leakage import check_leakage
 from adg.simuser.rule_user import RuleBasedUser
 
 __all__ = [
-    "SimulatedUser",
+    "RuleBasedUser",
     "SimUserInput",
     "SimUserReply",
-    "RuleBasedUser",
+    "SimulatedUser",
     "check_leakage",
 ]

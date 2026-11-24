@@ -215,8 +215,8 @@ def format_ci(mean: float, lower: float, upper: float) -> str:
 
 
 __all__ = [
-    "generate_main_results_table",
-    "generate_cost_table",
-    "generate_ablation_table",
     "format_ci",
+    "generate_ablation_table",
+    "generate_cost_table",
+    "generate_main_results_table",
 ]

@@ -55,13 +55,14 @@ clean:
 	rm -rf .mypy_cache/ .pytest_cache/ .ruff_cache/ htmlcov/ .coverage 2>/dev/null || true
 	rm -rf build/ dist/ *.egg-info/ 2>/dev/null || true
 
-# Demo targets (to be implemented)
+# Demo targets
 demo-mock:
-	@echo "Demo with mock backends - to be implemented in Phase 15"
-	@exit 1
+	@echo "Starting Gradio demo with mock backends..."
+	py -3.11 -m uv run python -m adg.demo.gradio_app
 
 demo:
-	@echo "Demo with real models - to be implemented in Phase 15"
+	@echo "Demo with real models requires model configuration."
+	@echo "Use 'make demo-mock' for quick demo with mock backends."
 	@exit 1
 
 # Data pipeline (to be implemented)

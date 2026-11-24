@@ -32,7 +32,9 @@
       "Bash(.venvScriptspython.exe -m ruff check src/ tests/ --fix)",
       "Bash(.venv\\\\Scripts\\\\python.exe -m mypy:*)",
       "Bash(.venv/Scripts/python.exe -m ruff check:*)",
-      "Bash(ruff check:*)"
+      "Bash(ruff check:*)",
+      "Bash(make demo-mock:*)",
+      "Bash(cat:*)"
     ]
   }
 }

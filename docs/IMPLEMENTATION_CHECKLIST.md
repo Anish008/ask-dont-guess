@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 14 COMPLETE ✓ (structure)
+Last updated: 2024-11-24, Phase 15 COMPLETE ✓
 
 ## Completed Features
 
@@ -160,9 +160,12 @@ Last updated: 2024-11-24, Phase 14 COMPLETE ✓ (structure)
 - [x] Tests (14 tests) — test_tables, test_plots
 - [ ] TODO: Mock run rejection logic, full report generation with real data
 
-### Phase 15 - Demo
-- [ ] demo/gradio_app.py (quick demo)
-- [ ] demo/examples.yaml (curated queries)
+### Phase 15 - Demo ✓
+- [x] demo/examples.yaml with 12 curated queries (4 clear, 4 ambiguous, 4 unknown)
+- [x] demo/gradio_app.py with ANSWER/ASK/ABSTAIN interface
+- [x] Makefile demo-mock target implemented
+- [x] Demo tested with mock backends — Launches on http://0.0.0.0:7860
+- [x] gradio>=4.0.0 added to pyproject.toml [demo] extra
 
 ### Phase 16 - API & Frontend (Optional)
 - [ ] api/app.py (FastAPI service)
@@ -214,8 +217,7 @@ Last updated: 2024-11-24, Phase 14 COMPLETE ✓ (structure)
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 14 completion
-2. Optional: Phase 15 Demo (Gradio interface)
-3. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
-4. Optional: Phase 17 Documentation (complete README, algorithm docs)
-5. Dataset verification required before real experiments
+1. Git commit Phase 15 completion
+2. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
+3. Optional: Phase 17 Documentation (complete README, algorithm docs)
+4. Dataset verification required before real experiments

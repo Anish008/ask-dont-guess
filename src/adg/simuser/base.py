@@ -64,7 +64,7 @@ class SimulatedUser(Protocol):
 
 
 __all__ = [
-    "SimulatedUser",
     "SimUserInput",
     "SimUserReply",
+    "SimulatedUser",
 ]

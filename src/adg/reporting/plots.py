@@ -347,11 +347,11 @@ def plot_cluster_histogram(
 
 
 __all__ = [
-    "plot_confusion_matrix",
-    "plot_risk_coverage_curve",
     "plot_budget_sweep",
-    "plot_feature_scatter",
     "plot_cluster_histogram",
-    "setup_plot_style",
+    "plot_confusion_matrix",
+    "plot_feature_scatter",
+    "plot_risk_coverage_curve",
     "save_figure",
+    "setup_plot_style",
 ]

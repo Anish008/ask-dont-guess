@@ -68,6 +68,11 @@ tracking = [
     "wandb>=0.15.0",
 ]
 
+# Demo UI - Phase 15
+demo = [
+    "gradio>=4.0.0",
+]
+
 # Embedding similarity (ablation only) - per spec §2.3
 embed = [
     "sentence-transformers>=2.2.0",
