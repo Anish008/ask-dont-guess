@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 13 COMPLETE ✓ (structure)
+Last updated: 2024-11-24, Phase 14 COMPLETE ✓ (structure)
 
 ## Completed Features
 
@@ -152,10 +152,13 @@ Last updated: 2024-11-24, Phase 13 COMPLETE ✓ (structure)
 - [x] Tests (24 tests) — test_leakage, test_rule_user, test_metrics, test_stats
 - [ ] TODO: Full LLM user implementation, actual experiment runs
 
-### Phase 14 - Results & Reporting
-- [ ] reporting/tables.py (Markdown, LaTeX, CSV)
-- [ ] reporting/plots.py (matplotlib figures)
-- [ ] adg report command generates all tables and figures
+### Phase 14 - Results & Reporting ✓ (structure)
+- [x] reporting/tables.py (Markdown, LaTeX, CSV) with custom markdown generation
+- [x] reporting/plots.py (5 plot types: confusion matrix, risk-coverage, budget sweep, feature scatter, cluster histogram)
+- [x] cli/main.py (Typer CLI entrypoint)
+- [x] cli/report.py (report generate and list commands)
+- [x] Tests (14 tests) — test_tables, test_plots
+- [ ] TODO: Mock run rejection logic, full report generation with real data
 
 ### Phase 15 - Demo
 - [ ] demo/gradio_app.py (quick demo)
@@ -194,7 +197,8 @@ Last updated: 2024-11-24, Phase 13 COMPLETE ✓ (structure)
 | 11 | Data Pipeline | 24 | 0 | 100% | `pytest tests/unit/data --cov` |
 | 12 | Methods | 6 | 0 | 26% | `pytest tests/unit/methods --cov` |
 | 13 | Evaluation | 24 | 0 | 85% | `pytest tests/unit/simuser tests/unit/evaluation --cov` |
-| **Total** | **All** | **349** | **0** | **~75%** | `pytest tests/ --cov` |
+| 14 | Reporting | 14 | 0 | 85% | `pytest tests/unit/reporting --cov` |
+| **Total** | **All** | **363** | **0** | **~72%** | `pytest tests/ --cov` |
 
 ## Known Bugs
 (None yet)
@@ -210,10 +214,8 @@ Last updated: 2024-11-24, Phase 13 COMPLETE ✓ (structure)
 See `docs/DEVIATIONS.md` (none yet)
 
 ## Next Steps
-1. Git commit Phase 13 completion
-2. Begin Phase 14: Results & Reporting
-   - reporting/tables.py (Markdown, LaTeX, CSV)
-   - reporting/plots.py (matplotlib figures)
-   - CLI command for generating reports
-3. Optional: Phase 15 Demo (Gradio interface)
-4. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
+1. Git commit Phase 14 completion
+2. Optional: Phase 15 Demo (Gradio interface)
+3. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
+4. Optional: Phase 17 Documentation (complete README, algorithm docs)
+5. Dataset verification required before real experiments
