@@ -215,6 +215,6 @@ def ask_f1_metric(predictions: list[Decision], labels: list[Action]) -> float:
 __all__ = [
     "ThresholdCalibrator",
     "accuracy_metric",
-    "ask_precision_metric",
     "ask_f1_metric",
+    "ask_precision_metric",
 ]

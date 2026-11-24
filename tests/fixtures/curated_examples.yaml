@@ -1,0 +1,95 @@
+# Curated examples for Phase 10 testing
+# These demonstrate the 3 ADG outcomes: ANSWER, ASK, ABSTAIN
+
+examples:
+  # Case 1: Clear question → ANSWER (high p1)
+  - id: clear_capital_france
+    query: "What is the capital of France?"
+    expected_action: ANSWER
+    description: "Unambiguous question with consensus answer"
+    mock_samples:
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+      - text: "Paris"
+        interpretation: "the capital city of France"
+
+  # Case 2: Ambiguous question → ASK (multiple interpretations)
+  - id: ambiguous_georgia
+    query: "What is the capital of Georgia?"
+    expected_action: ASK
+    description: "Ambiguous: US state vs country"
+    mock_samples:
+      - text: "Atlanta"
+        interpretation: "the US state Georgia"
+      - text: "Atlanta"
+        interpretation: "the US state Georgia"
+      - text: "Atlanta"
+        interpretation: "the US state Georgia"
+      - text: "Atlanta"
+        interpretation: "the US state Georgia"
+      - text: "Tbilisi"
+        interpretation: "the country Georgia"
+      - text: "Tbilisi"
+        interpretation: "the country Georgia"
+      - text: "Tbilisi"
+        interpretation: "the country Georgia"
+      - text: "Tbilisi"
+        interpretation: "the country Georgia"
+
+  # Case 3: Unanswerable → ABSTAIN (scattered/refusals)
+  - id: unknown_scattered
+    query: "What is the most popular flavor of ice cream in Antarctica?"
+    expected_action: ABSTAIN
+    description: "No clear answer, scattered guesses"
+    mock_samples:
+      - text: "I don't have information about that."
+        interpretation: "unknown"
+      - text: "I cannot answer this question."
+        interpretation: "unknown"
+      - text: "There's no data on this."
+        interpretation: "unknown"
+      - text: "I'm not sure."
+        interpretation: "uncertain"
+      - text: "Maybe vanilla?"
+        interpretation: "guess: vanilla"
+      - text: "Possibly chocolate."
+        interpretation: "guess: chocolate"
+      - text: "Perhaps strawberry."
+        interpretation: "guess: strawberry"
+      - text: "Could be mint."
+        interpretation: "guess: mint"
+
+  # Case 4: Multiple interpretations (3 options) → ASK
+  - id: ambiguous_java
+    query: "What is Java?"
+    expected_action: ASK
+    description: "Three interpretations: island, coffee, programming language"
+    mock_samples:
+      - text: "An Indonesian island"
+        interpretation: "the island"
+      - text: "An island in Indonesia"
+        interpretation: "the island"
+      - text: "A type of coffee"
+        interpretation: "coffee"
+      - text: "Coffee from Indonesia"
+        interpretation: "coffee"
+      - text: "A programming language"
+        interpretation: "the programming language"
+      - text: "An object-oriented programming language"
+        interpretation: "the programming language"
+      - text: "A programming language created by Sun Microsystems"
+        interpretation: "the programming language"
+      - text: "A popular programming language"
+        interpretation: "the programming language"

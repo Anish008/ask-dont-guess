@@ -98,7 +98,7 @@ class TestProcessQuery:
         """Test processing query with string."""
         session = conversation_manager.start_session("test_session")
 
-        updated_session, response, decision = conversation_manager.process_query(
+        updated_session, response, _decision = conversation_manager.process_query(
             session, "What is Python?"
         )
 
@@ -174,7 +174,7 @@ class TestProcessClarificationReply:
         # If we got ASK action, test clarification reply
         if decision.action == Action.ASK:
             # Reply with numeric selection
-            updated_session, response = conversation_manager.process_clarification_reply(
+            updated_session, _response = conversation_manager.process_clarification_reply(
                 session, "1"
             )
 
@@ -200,7 +200,7 @@ class TestProcessClarificationReply:
 
         if decision.action == Action.ASK:
             # Reply with invalid selection
-            updated_session, response = conversation_manager.process_clarification_reply(
+            _updated_session, response = conversation_manager.process_clarification_reply(
                 session, "invalid choice xyz"
             )
 
@@ -294,7 +294,7 @@ class TestMultiTurnWorkflow:
         session = conversation_manager.start_session("multi_turn_1")
 
         query = Query(query_id="q1", text="What is 2+2?")
-        session, response, decision = conversation_manager.process_query(session, query)
+        session, _response, decision = conversation_manager.process_query(session, query)
 
         # Should complete in one turn if ANSWER
         if decision.action == Action.ANSWER:
@@ -307,12 +307,14 @@ class TestMultiTurnWorkflow:
 
         # Initial query
         query = Query(query_id="q1", text="Python")
-        session, response, decision = conversation_manager.process_query(session, query)
+        session, _response, decision = conversation_manager.process_query(session, query)
 
         # If clarification is needed
         if decision.action == Action.ASK:
             # Provide clarification
-            session, final_response = conversation_manager.process_clarification_reply(session, "1")
+            session, _final_response = conversation_manager.process_clarification_reply(
+                session, "1"
+            )
 
             assert session.state == "ANSWERED"
             assert len(session.turns) == 2

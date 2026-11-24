@@ -290,9 +290,11 @@ class HFLLMBackend:
         inputs = {k: v.to(self.hw_info.device) for k, v in inputs.items()}
 
         # Generation config
+        GREEDY_THRESHOLD = 0.0
+        FALLBACK_TEMP = 1.0
         gen_config = GenerationConfig(
-            do_sample=temperature > 0.0,  # noqa: PLR2004
-            temperature=temperature if temperature > 0.0 else 1.0,  # noqa: PLR2004
+            do_sample=temperature > GREEDY_THRESHOLD,
+            temperature=temperature if temperature > GREEDY_THRESHOLD else FALLBACK_TEMP,
             max_new_tokens=max_new_tokens,
             pad_token_id=self.tokenizer.pad_token_id,
             eos_token_id=self.tokenizer.eos_token_id,

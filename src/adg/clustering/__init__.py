@@ -9,8 +9,8 @@ from adg.clustering.interpretation import compute_interpretation_divergence
 from adg.clustering.relations import compute_pairwise_relations
 
 __all__ = [
-    "compute_pairwise_relations",
     "cluster_samples",
     "compute_aggregate_features",
     "compute_interpretation_divergence",
+    "compute_pairwise_relations",
 ]

@@ -474,7 +474,6 @@ __all__ = [
     "ADGResult",
     # Decision
     "Action",
-    "Decision",
     "AggregateFeatures",
     "ClarifyingQuestion",
     # Clustering
@@ -483,6 +482,7 @@ __all__ = [
     "ClusteringResult",
     # Cost
     "CostRecord",
+    "Decision",
     "DecisionTrace",
     "Example",
     # Evaluation

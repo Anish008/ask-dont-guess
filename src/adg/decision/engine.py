@@ -127,4 +127,4 @@ class DecisionEngine:
         log.info("thresholds_updated", thresholds=self.thresholds)
 
 
-__all__ = ["DecisionEngine", "DecisionContext"]
+__all__ = ["DecisionContext", "DecisionEngine"]

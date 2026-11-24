@@ -27,7 +27,11 @@
       "Bash(set:*)",
       "Bash(python -m ruff check:*)",
       "Bash(python -m mypy:*)",
-      "Bash(where:*)"
+      "Bash(where:*)",
+      "Bash(pytest:*)",
+      "Bash(.venvScriptspython.exe -m ruff check src/ tests/ --fix)",
+      "Bash(.venv\\\\Scripts\\\\python.exe -m mypy:*)",
+      "Bash(.venv/Scripts/python.exe -m ruff check:*)"
     ]
   }
 }

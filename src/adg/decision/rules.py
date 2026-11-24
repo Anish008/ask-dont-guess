@@ -123,4 +123,4 @@ def apply_rules(
     return Action.ABSTAIN, "default_abstain"
 
 
-__all__ = ["DecisionRule", "ORDERED_RULES", "DEFAULT_THRESHOLDS", "apply_rules"]
+__all__ = ["DEFAULT_THRESHOLDS", "ORDERED_RULES", "DecisionRule", "apply_rules"]
