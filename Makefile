@@ -1,7 +1,7 @@
 # Makefile for Ask, Don't Guess (ADG)
 # Per spec §5 and Phase 1 requirements
 
-.PHONY: help setup lint format typecheck test test-slow clean demo demo-mock data experiment report
+.PHONY: help setup lint format typecheck test test-slow clean demo demo-mock api api-dev data experiment report
 
 # Default target
 help:
@@ -16,9 +16,13 @@ help:
 	@echo "  make test-slow      - Run all tests including slow model tests"
 	@echo "  make clean          - Remove generated files and caches"
 	@echo ""
-	@echo "Demo and experiments (to be implemented in later phases):"
-	@echo "  make demo-mock      - Run demo with mock backends"
-	@echo "  make demo           - Run demo with real models"
+	@echo "Demo and API:"
+	@echo "  make demo-mock      - Run Gradio demo with mock backends"
+	@echo "  make demo           - Run Gradio demo with real models"
+	@echo "  make api            - Run FastAPI server (production mode)"
+	@echo "  make api-dev        - Run FastAPI server (development mode with reload)"
+	@echo ""
+	@echo "Experiments (to be implemented in later phases):"
 	@echo "  make data           - Build datasets"
 	@echo "  make experiment     - Run experiments"
 	@echo "  make report         - Generate reports"
@@ -64,6 +68,15 @@ demo:
 	@echo "Demo with real models requires model configuration."
 	@echo "Use 'make demo-mock' for quick demo with mock backends."
 	@exit 1
+
+# API server targets
+api:
+	@echo "Starting FastAPI server..."
+	py -3.11 -m uv run uvicorn adg.api.app:app --factory --host 0.0.0.0 --port 8000
+
+api-dev:
+	@echo "Starting FastAPI server in development mode..."
+	py -3.11 -m uv run uvicorn adg.api.app:app --factory --host 0.0.0.0 --port 8000 --reload
 
 # Data pipeline (to be implemented)
 data:

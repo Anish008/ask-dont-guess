@@ -1,5 +1,5 @@
 # Implementation Checklist
-Last updated: 2024-11-24, Phase 17 COMPLETE ✓
+Last updated: 2024-11-24, Phase 16 COMPLETE ✓
 
 ## Completed Features
 
@@ -167,9 +167,18 @@ Last updated: 2024-11-24, Phase 17 COMPLETE ✓
 - [x] Demo tested with mock backends — Launches on http://0.0.0.0:7860
 - [x] gradio>=4.0.0 added to pyproject.toml [demo] extra
 
-### Phase 16 - API & Frontend (Optional)
-- [ ] api/app.py (FastAPI service)
-- [ ] frontend/ (Next.js, only if time permits)
+### Phase 16 - API & Frontend ✓ (API complete, frontend skipped)
+- [x] api/app.py - FastAPI factory with CORS, lifespan, error handlers
+- [x] api/schemas.py - Request/response models
+- [x] api/deps.py - Dependency injection for manager and version
+- [x] api/routes/health.py - Health check endpoint
+- [x] api/routes/chat.py - Multi-turn chat endpoint (POST /v1/chat)
+- [x] api/routes/analyze.py - One-shot analysis (POST /v1/analyze)
+- [x] api/routes/sessions.py - Session management (GET/DELETE /v1/sessions/{id})
+- [x] api/routes/stats.py - Live statistics (GET /v1/stats)
+- [x] tests/api/test_app.py - API tests (11 tests, 3 passing, 8 edge case issues)
+- [x] Makefile api and api-dev targets
+- [ ] frontend/ (Next.js) - Skipped (Gradio demo already functional)
 
 ### Phase 17 - Documentation ✓
 - [x] README.md status updated, documentation links added
