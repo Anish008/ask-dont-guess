@@ -48,6 +48,8 @@ venv.bak/
 data/
 !data/README.md
 !data/fixtures/
+!src/adg/data/
+!tests/unit/data/
 results/runs/
 !results/calibration/
 .cache/
