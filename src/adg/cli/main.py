@@ -6,6 +6,10 @@ Per spec: Typer CLI with rich progress bars and help text.
 import typer
 from rich import print as rprint
 
+from adg.cli.analyze import analyze_query
+from adg.cli.chat import chat_interactive
+from adg.cli.data import app as data_app
+from adg.cli.experiment import app as experiment_app
 from adg.cli.report import app as report_app
 
 app = typer.Typer(
@@ -14,7 +18,11 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
-# Add subcommands
+# Add commands and subcommands
+app.command(name="analyze")(analyze_query)
+app.command(name="chat")(chat_interactive)
+app.add_typer(data_app, name="data")
+app.add_typer(experiment_app, name="experiment")
 app.add_typer(report_app, name="report")
 
 

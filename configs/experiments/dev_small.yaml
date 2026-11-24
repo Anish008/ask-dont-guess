@@ -1,0 +1,14 @@
+# Small development experiment config
+# Tests basic pipeline with mock backends
+name: dev_small
+methods:
+  - always_answer
+  - adg_core
+datasets:
+  - ambigqa  # TODO(verify): needs real dataset
+seeds:
+  - 0
+models:
+  - mock
+max_turns: 2
+output_dir: results/runs

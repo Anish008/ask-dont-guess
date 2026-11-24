@@ -78,15 +78,26 @@ api-dev:
 	@echo "Starting FastAPI server in development mode..."
 	py -3.11 -m uv run uvicorn adg.api.app:app --factory --host 0.0.0.0 --port 8000 --reload
 
-# Data pipeline (to be implemented)
+# Data pipeline
 data:
-	@echo "Data pipeline - to be implemented in Phase 11"
-	@exit 1
+	py -3.11 -m uv run python -m adg.cli.main data build
 
-# Experiments (to be implemented)
+data-verify:
+	py -3.11 -m uv run python -m adg.cli.main data verify
+
+# Experiments
 experiment:
-	@echo "Experiments - to be implemented in Phase 13"
-	@exit 1
+	py -3.11 -m uv run python -m adg.cli.main experiment run configs/experiments/dev_small.yaml
+
+experiment-list:
+	py -3.11 -m uv run python -m adg.cli.main experiment list-runs
+
+# Interactive commands
+analyze:
+	py -3.11 -m uv run python -m adg.cli.main analyze "$(QUERY)"
+
+chat:
+	py -3.11 -m uv run python -m adg.cli.main chat
 
 # Report generation (to be implemented)
 report:

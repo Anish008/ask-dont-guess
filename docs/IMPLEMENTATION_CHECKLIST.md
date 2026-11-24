@@ -235,9 +235,19 @@ Last updated: 2024-11-24, Phase 18 COMPLETE ✓
 ## Deviations from Spec
 See `docs/DEVIATIONS.md` (none yet)
 
-## Next Steps
-1. Git commit Phase 17 completion
-2. Optional: Phase 16 API & Frontend (FastAPI + Next.js)
-3. Optional: Phase 18 Demo Preparation (demo script, video/screenshots)
-4. Dataset verification required before real experiments
-5. Run full experiments with real models to generate results
+## Next Steps - CLI & Experiments Ready
+
+### CLI Implementation Complete
+- [x] analyze command - single query analysis with mock backends
+- [x] chat command - interactive multi-turn chat
+- [x] data build/verify commands - dataset pipeline structure
+- [x] experiment run/list-runs commands - experiment management
+- [x] report commands - already implemented in Phase 14
+- [x] Makefile targets - analyze, chat, data, experiment, api
+- [x] Test experiment config - dev_small.yaml
+
+### Remaining TODOs
+1. Dataset verification (Phase 11) - verify AmbigQA, NQ-open, CLAMBER loaders
+2. Full baseline implementations (Phase 12) - complete ask_if_unclear, stated_confidence, etc.
+3. Real model support - load models from config, test with real HF backends
+4. Run experiments with real models to generate results

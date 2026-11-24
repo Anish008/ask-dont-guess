@@ -5,6 +5,7 @@ Per spec §12.5: Generate tables and figures from run artifacts.
 
 import json
 from pathlib import Path
+from typing import Literal, cast
 
 import typer
 from rich import print as rprint
@@ -90,10 +91,11 @@ def generate(  # noqa: PLR0912, PLR0915
     rprint("[bold]Generating tables...[/bold]")
 
     # Main results table (ponytail: placeholder structure)
+    fmt = cast(Literal["markdown", "latex", "csv"], format)
     if "results" in metrics:
         generate_main_results_table(
             metrics["results"],
-            output_format=format,
+            output_format=fmt,
             output_path=output_dir / f"main_results.{format}",
         )
         rprint(f"  ✓ Main results table: {output_dir / f'main_results.{format}'}")
@@ -102,7 +104,7 @@ def generate(  # noqa: PLR0912, PLR0915
     if "costs" in metrics:
         generate_cost_table(
             metrics["costs"],
-            output_format=format,
+            output_format=fmt,
             output_path=output_dir / f"costs.{format}",
         )
         rprint(f"  ✓ Cost table: {output_dir / f'costs.{format}'}")
@@ -111,7 +113,7 @@ def generate(  # noqa: PLR0912, PLR0915
     if "ablations" in metrics:
         generate_ablation_table(
             metrics["ablations"],
-            output_format=format,
+            output_format=fmt,
             output_path=output_dir / f"ablations.{format}",
         )
         rprint(f"  ✓ Ablation table: {output_dir / f'ablations.{format}'}")
