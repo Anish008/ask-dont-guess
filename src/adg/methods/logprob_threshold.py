@@ -6,6 +6,8 @@ Per spec §8: Mean token log-prob with two thresholds.
 from adg.core.logging import get_logger
 from adg.core.protocols import LLMBackend
 from adg.core.types import CostRecord, Query, Turn
+from adg.llm.hf_backend import HFLLMBackend
+from adg.llm.prompts import format_structured_prompt
 from adg.methods.base import BudgetSpec, Method, MethodOutput
 
 log = get_logger(__name__)
@@ -54,27 +56,39 @@ class LogProbThreshold(Method):
         Returns:
             MethodOutput with decided action
         """
-        # TODO: Implement full logic with log-prob extraction
-        # For now, return ANSWER (requires backend support)
-        from adg.sampling.sampler import Sampler
+        # Check if backend supports log-probs
+        if not isinstance(self.llm, HFLLMBackend):
+            # Mark as unsupported
+            log.warning("logprob_unsupported", backend=type(self.llm).__name__)
+            return MethodOutput(
+                action="ABSTAIN",
+                message="Log-prob threshold unsupported for this backend",
+                options=[],
+                score=None,
+                trace={"method": "logprob_threshold", "supported": False},
+                cost=CostRecord(),
+            )
 
-        sampler = Sampler(self.llm)
-        result = sampler.sample(query, n_samples=1, temperature=0.0, seed=0)
+        # Generate with log-probs (greedy)
+        prompt = format_structured_prompt(query.text)
+        answer, mean_logprob = self.llm.generate_with_logprobs(
+            prompt, temperature=0.0, max_new_tokens=96, seed=0
+        )
 
-        answer = result.samples[0].answer if result.samples else "No answer"
-        mean_logprob = -1.0  # Mock log-prob
-
-        # Apply thresholds
+        # Apply two-threshold logic
         if mean_logprob >= self.tau_high:
             action = "ANSWER"
+            message = answer
         elif mean_logprob >= self.tau_low:
             action = "ASK"
+            message = "Could you clarify?"
         else:
             action = "ABSTAIN"
+            message = "I'm not confident in my answer."
 
         return MethodOutput(
             action=action,
-            message=answer if action == "ANSWER" else "Uncertain",
+            message=message,
             options=[],
             score=mean_logprob,
             trace={
@@ -83,7 +97,7 @@ class LogProbThreshold(Method):
                 "tau_high": self.tau_high,
                 "tau_low": self.tau_low,
             },
-            cost=result.cost,
+            cost=CostRecord(input_tokens=0, output_tokens=0),  # TODO: proper cost tracking
         )
 
     def answer_after_clarification(

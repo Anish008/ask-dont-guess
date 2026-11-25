@@ -12,6 +12,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_ex
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
+    BitsAndBytesConfig,
     GenerationConfig,
     set_seed,
 )
@@ -20,7 +21,7 @@ from adg.config.schema import AppConfig
 from adg.core.device import detect_hardware, get_torch_dtype
 from adg.core.errors import GenerationError, ModelNotLoadedError
 from adg.core.logging import get_logger
-from adg.core.types import Query, SamplingResult
+from adg.core.types import Query, Sample, SamplingResult
 from adg.llm.parsing import parse_structured_output
 from adg.llm.prompts import format_structured_prompt
 
@@ -89,8 +90,6 @@ class HFLLMBackend:
             load_kwargs["load_in_4bit"] = True
             load_kwargs["device_map"] = "auto"
             # Use bitsandbytes config for 4-bit
-            from transformers import BitsAndBytesConfig
-
             torch_dtype = get_torch_dtype(self.hw_info.dtype)
             load_kwargs["quantization_config"] = BitsAndBytesConfig(
                 load_in_4bit=True,
@@ -173,9 +172,11 @@ class HFLLMBackend:
         inputs = {k: v.to(self.hw_info.device) for k, v in inputs.items()}
 
         # Generation config
+        GREEDY_THRESHOLD = 0.0
+        FALLBACK_TEMP = 1.0
         gen_config = GenerationConfig(
-            do_sample=True,
-            temperature=temperature,
+            do_sample=temperature > GREEDY_THRESHOLD,
+            temperature=temperature if temperature > GREEDY_THRESHOLD else FALLBACK_TEMP,
             top_p=top_p,
             max_new_tokens=max_new_tokens,
             num_return_sequences=n_samples,
@@ -206,8 +207,6 @@ class HFLLMBackend:
                 except Exception as e:
                     log.warning("parse_failed", sample_id=i, error=str(e))
                     # Create invalid sample
-                    from adg.core.types import Sample
-
                     samples.append(
                         Sample(
                             interpretation="",
@@ -325,6 +324,77 @@ class HFLLMBackend:
                 f"HF generation failed: {e}",
                 backend="hf",
             ) from e
+
+    def generate_with_logprobs(
+        self,
+        prompt: str,
+        temperature: float = 0.0,
+        max_new_tokens: int = 96,
+        seed: int | None = None,
+    ) -> tuple[str, float]:
+        """Generate with token log-probs.
+
+        Args:
+            prompt: Input prompt
+            temperature: Sampling temperature
+            max_new_tokens: Maximum tokens
+            seed: Random seed
+
+        Returns:
+            Tuple of (generated_text, mean_logprob)
+        """
+        if seed is not None:
+            set_seed(seed)
+            torch.manual_seed(seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(seed)
+
+        inputs = self.tokenizer(
+            prompt,
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
+            max_length=self.config.llm.max_context,
+        )
+        inputs = {k: v.to(self.hw_info.device) for k, v in inputs.items()}
+
+        GREEDY_THRESHOLD = 0.0
+        FALLBACK_TEMP = 1.0
+        gen_config = GenerationConfig(
+            do_sample=temperature > GREEDY_THRESHOLD,
+            temperature=temperature if temperature > GREEDY_THRESHOLD else FALLBACK_TEMP,
+            max_new_tokens=max_new_tokens,
+            pad_token_id=self.tokenizer.pad_token_id,
+            eos_token_id=self.tokenizer.eos_token_id,
+            return_dict_in_generate=True,
+            output_scores=True,
+        )
+
+        try:
+            with torch.no_grad():
+                outputs = self.model.generate(**inputs, generation_config=gen_config)
+
+            # Compute transition scores (log-probs)
+            transition_scores = self.model.compute_transition_scores(
+                outputs.sequences,
+                outputs.scores,
+                normalize_logits=True,
+            )
+
+            # Mean log-prob over generated tokens
+            mean_logprob = transition_scores[0].mean().item()
+
+            # Decode text
+            text = self.tokenizer.decode(
+                outputs.sequences[0, inputs["input_ids"].shape[1] :],
+                skip_special_tokens=True,
+            )
+
+            return text.strip(), mean_logprob
+
+        except Exception as e:
+            log.error("logprob_generation_failed", error=str(e))
+            raise GenerationError(f"Log-prob generation failed: {e}", backend="hf") from e
 
     def close(self) -> None:
         """Clean up resources."""

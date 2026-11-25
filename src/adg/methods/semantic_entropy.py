@@ -4,11 +4,15 @@ Per spec §8: Discrete SE over meaning clusters (Kuhn et al.).
 Faithful replication using strict bidirectional entailment.
 """
 
+import math
 
+from adg.clustering.algorithms import cluster_samples
+from adg.clustering.relations import compute_pairwise_relations
 from adg.core.logging import get_logger
 from adg.core.protocols import LLMBackend, NLIScorer
 from adg.core.types import CostRecord, Query, Turn
 from adg.methods.base import BudgetSpec, Method, MethodOutput
+from adg.sampling.sampler import Sampler
 
 log = get_logger(__name__)
 
@@ -63,24 +67,67 @@ class SemanticEntropy(Method):
         Returns:
             MethodOutput with decided action
         """
-        # TODO: Implement full clustering and entropy computation
-        # For now, return simple ANSWER
-        from adg.sampling.sampler import Sampler
+        # Plain sampling (no structured format)
+        plain_query = Query(query_id=query.query_id, text=f"Question: {query.text}\n\nAnswer:")
 
         sampler = Sampler(self.llm)
-        result = sampler.sample(query, n_samples=self.n_samples, temperature=0.7, seed=0)
+        result = sampler.sample(
+            plain_query,
+            n_samples=self.n_samples,
+            temperature=0.7,
+            top_p=0.9,
+            max_new_tokens=96,
+            seed=0,
+        )
 
-        # Mock entropy calculation
-        entropy = 0.3  # Low entropy → ANSWER
+        # Filter to valid non-refusal samples
+        valid_samples = [s for s in result.samples if s.is_valid and not s.is_refusal]
 
-        # Apply thresholds
+        MIN_SAMPLES_FOR_CLUSTERING = 2
+        if len(valid_samples) < MIN_SAMPLES_FOR_CLUSTERING:
+            # Not enough samples → ABSTAIN
+            return MethodOutput(
+                action="ABSTAIN",
+                message="I'm not confident I can answer this.",
+                options=[],
+                score=None,
+                trace={
+                    "method": "semantic_entropy",
+                    "n_samples": len(result.samples),
+                    "n_valid": len(valid_samples),
+                },
+                cost=CostRecord(),  # TODO: track actual cost
+            )
+
+        # Compute NLI pairwise relations (strict bidirectional entailment)
+        relations = compute_pairwise_relations(
+            valid_samples, self.nli, query.text, input_format="answer_only"
+        )
+
+        # Cluster with greedy bidirectional (faithful to Kuhn et al.)
+        clustering_result = cluster_samples(
+            valid_samples, relations, algorithm="greedy_bidirectional"
+        )
+
+        # Compute discrete entropy: H = -sum(p_i * log(p_i))
+        clusters = clustering_result.clusters
+        total = sum(c.size for c in clusters)
+        probs = [c.size / total for c in clusters]
+        entropy = -sum(p * math.log2(p) for p in probs if p > 0)
+
+        # Apply two-threshold decision
         if entropy <= self.tau1:
+            # Low entropy → ANSWER with majority cluster's answer
             action = "ANSWER"
-            message = result.samples[0].answer if result.samples else "No answer"
+            majority_cluster = max(clusters, key=lambda c: c.size)
+            majority_idx = majority_cluster.members[0]
+            message = valid_samples[majority_idx].answer
         elif entropy <= self.tau2:
+            # Medium entropy → ASK
             action = "ASK"
-            message = "Could you clarify?"
+            message = "Could you clarify what you mean?"
         else:
+            # High entropy → ABSTAIN
             action = "ABSTAIN"
             message = "I'm not confident I can answer this accurately."
 
@@ -93,10 +140,12 @@ class SemanticEntropy(Method):
                 "method": "semantic_entropy",
                 "entropy": entropy,
                 "n_samples": self.n_samples,
+                "n_valid": len(valid_samples),
+                "n_clusters": len(clusters),
                 "tau1": self.tau1,
                 "tau2": self.tau2,
             },
-            cost=result.cost,
+            cost=CostRecord(),  # TODO: track actual cost
         )
 
     def answer_after_clarification(
