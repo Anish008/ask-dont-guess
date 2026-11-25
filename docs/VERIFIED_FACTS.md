@@ -75,3 +75,74 @@ _To be verified_
 
 ## Experiments (TODO - Step 4)
 _To be run after Steps 1-3 complete_
+
+## Step 3: Dataset Verification (2026-11-25)
+
+### AmbigQA
+- **Source**: HuggingFace `sewon/ambig_qa` (config: `full`)
+- **Splits**: train, validation
+- **train**: 10036 examples
+- **validation**: 2002 examples
+- **Columns**: id, question, annotations, viewed_doc_titles, used_queries, nq_answer, nq_doc_title
+
+**Annotation types:**
+- `multipleQAs`: 5817 (48.3%)
+- `singleAnswer`: 6221 (51.7%)
+
+**Schema:**
+```python
+# multipleQAs example:
+id: -4469503464110108318
+question: "When did the simpsons first air on television?"
+annotations['type']: ['multipleQAs']
+annotations['qaPairs']: [
+  {'question': [...], 'answer': [...]}
+]
+```
+
+```python
+# singleAnswer example:
+question: "Who plays the doctor in dexter season 1?"
+annotations['answer']: [['Tony Goldwyn', 'Goldwyn']]
+```
+
+### NQ-open
+- **Source**: HuggingFace `google-research-datasets/nq_open`
+- **Splits**: train, validation
+- **train**: 87925 examples
+- **validation**: 3610 examples
+- **Columns**: question, answer
+
+**Schema:**
+```python
+question: "where did they film hot tub time machine"
+answer: ['Fernie Alpine Resort']
+```
+
+### CLAMBER
+- **Source**: GitHub `zt991211/CLAMBER`
+- **File**: `clamber_benchmark.jsonl`
+- **Total examples**: 3202
+
+**Categories:**
+- `MC`: 1602 (50.0%)
+- `FD`: 800 (25.0%)
+- `LA`: 800 (25.0%)
+
+**Requires clarification**: 1601 (50.0%)
+
+**Schema:**
+```python
+question: "Give me a list of good coffee shops?"
+require_clarification: 1
+category: "MC"
+subclass: "whom"
+clarifying_question: "What do you personally consider important in a coffee shop? Are you looking for ..."
+```
+
+### AmbigQA ↔ NQ-open Deduplication
+- **Unique AmbigQA questions**: 12038
+- **NQ-open train**: 87925 total, 12041 overlap (13.7%)
+- **NQ-open validation**: 3610 total, 0 overlap (0.0%)
+
+**Deduplication strategy:** Exclude NQ-open questions that appear in AmbigQA (normalized match)

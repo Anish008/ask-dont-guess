@@ -262,13 +262,20 @@ Per user instructions - finish baselines with real models before datasets:
 - Added `generate_with_logprobs()` method to HFLLMBackend
 - Test script: `scripts/test_baselines.py`
 
-### Step 3: Dataset Verification (NEXT)
-- [ ] Load AmbigQA from HF (sewon/ambig_qa)
-- [ ] Load NQ-open from HF (google-research-datasets/nq_open)
-- [ ] Clone CLAMBER from GitHub (zt991211/CLAMBER)
-- [ ] Verify schemas and counts
-- [ ] Apply AmbigQA→NQ-open dedup
-- [ ] Record findings in VERIFIED_FACTS.md
+### Step 3: Dataset Verification ✓ COMPLETE
+- [x] Load AmbigQA from HF (sewon/ambig_qa config: full)
+- [x] Load NQ-open from HF (google-research-datasets/nq_open)
+- [x] Clone CLAMBER from GitHub (zt991211/CLAMBER)
+- [x] Verify schemas and counts
+- [x] Apply AmbigQA→NQ-open dedup analysis
+- [x] Record findings in VERIFIED_FACTS.md
+
+**Findings:**
+- **AmbigQA**: 10,036 train + 2,002 validation (48.3% ambiguous, 51.7% single-answer)
+- **NQ-open**: 87,925 train + 3,610 validation (13.7% overlap with AmbigQA train)
+- **CLAMBER**: 3,202 examples (50% MC, 25% FD, 25% LA; 50% require clarification)
+- Deduplication: 12,041 NQ-open train questions overlap with AmbigQA → need to exclude
+- Test script: `scripts/verify_datasets_final.py`
 
 ### Step 4: Run Experiments
 - [ ] Fix structured prompt format
