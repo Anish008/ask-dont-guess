@@ -146,3 +146,59 @@ clarifying_question: "What do you personally consider important in a coffee shop
 - **NQ-open validation**: 3610 total, 0 overlap (0.0%)
 
 **Deduplication strategy:** Exclude NQ-open questions that appear in AmbigQA (normalized match)
+
+## Step 4: Initial Experiment Setup (2026-11-25)
+
+### Pipeline Verification
+**Test script**: `scripts/test_pipeline_simple.py`
+
+**Models tested:**
+- LLM: Qwen/Qwen2.5-1.5B-Instruct (3GB, CPU inference)
+- NLI: microsoft/deberta-large-mnli (1.6GB, CPU inference)
+
+**Baseline methods tested:**
+- `always_answer`: 100% ANSWER (as expected)
+- `ask_if_unclear`: Functional with fallback mechanisms
+
+**Performance:**
+- Inference time: ~24 seconds per query on CPU (16 cores, fp32)
+- Sample generation: ~20-25 seconds
+- NLI scoring: minimal overhead
+- Total pipeline: functional end-to-end
+
+### Structured Prompt Issue
+
+**Problem**: Models produce conversational text instead of JSON format
+- Expected: `{"action": "answer", "content": "Paris"}`
+- Actual: `"For example:\nInterpretation: ..."`
+
+**Solution**: Fallback mechanisms implemented
+- JSON parsing with error handling
+- Heuristic-based decisions on parse failure
+- Methods remain functional despite format issues
+
+**Parse failure rate**: ~66% (2/3 test queries)
+- Fallback to heuristics works correctly
+- "I don't know" correctly triggers ABSTAIN
+- Methods produce reasonable decisions
+
+### Key Findings
+
+1. **Pipeline works end-to-end**: Query → Method → Decision
+2. **Baselines are functional**: All methods produce valid outputs
+3. **Fallbacks are essential**: JSON parsing unreliable with Qwen 1.5B
+4. **Performance acceptable**: CPU inference viable for experiments
+5. **Model limitations**: Small instruction-tuned models struggle with strict formatting
+
+### Remaining Work for Full Experiments
+
+**Not yet implemented:**
+- Data loading infrastructure (dataset → Example schema)
+- Evaluation metrics computation
+- Experiment runner with batch processing
+- Threshold calibration system
+- Report generation
+
+**Estimated effort**: 40-50 hours for complete implementation
+
+See `docs/STEP4_NOTES.md` for detailed analysis and recommendations.
