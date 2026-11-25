@@ -7,13 +7,15 @@ Per spec §4.3: structured vs plain prompts.
 # Structured Prompt (with interpretation, answer, confidence)
 # ==============================================================================
 
-STRUCTURED_PROMPT_TEMPLATE = """Question: {question}
+STRUCTURED_PROMPT_TEMPLATE = """Answer this question following the exact format below.
 
-Answer the question above. First, write your interpretation of what is being asked. Then provide your answer. Finally, rate your confidence (high/medium/low).
+Question: {question}
 
-Interpretation:
-Answer:
-Confidence:"""
+Provide your response in EXACTLY this format (do not add any other text):
+
+Interpretation: [What aspect of the question you are answering]
+Answer: [Your brief answer]
+Confidence: [high, medium, or low]"""
 
 
 # ==============================================================================

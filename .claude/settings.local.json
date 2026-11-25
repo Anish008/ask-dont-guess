@@ -34,7 +34,8 @@
       "Bash(.venv/Scripts/python.exe -m ruff check:*)",
       "Bash(ruff check:*)",
       "Bash(make demo-mock:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(echo:*)"
     ]
   }
 }

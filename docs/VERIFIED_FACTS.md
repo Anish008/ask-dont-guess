@@ -1,141 +1,77 @@
-# Verified Facts (Never Fabricated)
+# Verified Facts
 
-**Last updated:** 2024-11-23
-**Purpose:** Record all verified dataset schemas, model IDs, API details, and experimental facts. Per spec §0.1 point 3, we never invent or guess these details.
+Last updated: 2024-11-25
 
----
+## Step 1: Real Model Support (2024-11-25)
 
-## Models
+### Models Loaded Successfully
+- **LLM**: Qwen/Qwen2.5-1.5B-Instruct
+  - Model ID verified: `Qwen/Qwen2.5-1.5B-Instruct`
+  - Revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+  - Size: ~3GB (safetensors format)
+  - Loading time: ~5 seconds on CPU
+  - Config: `configs/models/qwen2.5-1.5b.yaml`
 
-### LLM Models
-*(To be verified in Phase 4 when first loading models)*
+- **NLI**: microsoft/deberta-large-mnli
+  - Model ID verified: `microsoft/deberta-large-mnli`
+  - Revision: 7296194b9009373def4f7c5dad292651e4b5cf4e
+  - Size: ~1.6GB (pytorch_model.bin format)
+  - Loading time: ~30 seconds on CPU
+  - Config: `configs/nli/deberta-large-mnli.yaml`
 
-**Qwen/Qwen2.5-1.5B-Instruct:**
-- TODO(verify): Exact Hugging Face model ID
-- TODO(verify): Model revision/commit SHA to pin
-- TODO(verify): License terms
-- TODO(verify): Tokenizer details and chat template format
-- TODO(verify): Memory footprint in fp16 and 4-bit
-- TODO(verify): Context length
+### Inference Tests (3 examples)
+- **Example 1**: "What is the capital of France?" (clear question)
+  - Sampling: 10 samples generated successfully
+  - Inference time: ~2 minutes on CPU (10 samples)
+  - NLI scoring: 45 pairs computed
+  - Clustering: Agglomerative, 2 clusters found
 
-**Qwen/Qwen2.5-3B-Instruct:**
-- TODO(verify): Same as above
+- **Example 2**: "What is the capital of Georgia?" (ambiguous)
+  - Sampling: 10 samples generated successfully
+  - Inference time: ~1.8 minutes on CPU
+  - NLI scoring: 45 pairs computed
+  - Clustering: 1 cluster found (all Tbilisi - country interpretation)
 
-**meta-llama/Llama-3.2-3B-Instruct:**
-- TODO(verify): License acceptance required
-- TODO(verify): Gated model access process
-- TODO(verify): Same verification as Qwen models
+- **Example 3**: "Most popular ice cream flavor in Antarctica?" (unknown)
+  - Sampling: 10 samples generated successfully
+  - Inference time: ~1.8 minutes on CPU
+  - NLI scoring: 45 pairs computed
+  - Clustering: 1 cluster found
 
----
+### Hardware Info
+- Device: CPU (no GPU detected)
+- CPU count: 16 cores
+- RAM: ~31GB
+- Dtype: fp32 (no quantization)
 
-## NLI Models
+### Known Issues
+1. **Structured prompt parsing**: Model produces conversational text instead of structured format
+   - Expected: `Interpretation: X\nAnswer: Y\nConfidence: Z`
+   - Actual: Conversational explanation with answer embedded
+   - Result: All samples marked as `n_valid=0`
+   - Decision: System falls back to ABSTAIN due to invalid samples
 
-### DeBERTa-MNLI
-*(To be verified in Phase 5 when first loading NLI model)*
+2. **Performance**: CPU inference is slow (~10-12 seconds per sample)
+   - GPU would be 10-100x faster
+   - Consider GPU deployment for production
 
-**microsoft/deberta-large-mnli:**
-- TODO(verify): Exact model ID on Hugging Face
-- TODO(verify): config.id2label mapping (which index = entailment/neutral/contradiction)
-- TODO(verify): License
-- TODO(verify): Max sequence length
-- TODO(verify): Memory footprint in fp16
-- TODO(verify): Expected probabilities on test pairs:
-  - ("A man is playing guitar.", "A person is playing an instrument.") → should be entailment-dominant
-  - ("The capital is Atlanta.", "The capital is Tbilisi.") → should be contradiction-dominant
+### Config Loading
+- Fixed config path resolution: `config_dir = config_path.parent` (not `.parent.parent`)
+- Config references work correctly: `llm.config: qwen2.5-1.5b` → `configs/models/qwen2.5-1.5b.yaml`
+- Merge order correct: referenced config loaded, then base.yaml overrides applied
 
-**microsoft/deberta-v3-base (alternative for CPU dev):**
-- TODO(verify): Same as above
+### Logs
+- Full test log: `results/step1_test.log`
+- Test script: `scripts/test_real_models.py`
 
----
+### Next Steps
+1. Fix structured prompt format (make it work with Qwen instruct models)
+2. Consider using chat templates instead of plain prompts
+3. Test with GPU if available for realistic performance
+4. Implement full baselines (Step 2)
 
-## Datasets
+## Datasets (TODO - Step 3)
+_To be verified_
 
-### AmbigQA
-*(To be verified in Phase 11 when loading datasets)*
-
-- TODO(verify): Hugging Face dataset ID (e.g., `sewon/ambig_qa`)
-- TODO(verify): Available configs (light/full)
-- TODO(verify): Split names and sizes (train/dev/test)
-- TODO(verify): Field names and schema:
-  - Expected: id, question, annotations (with type, answer, qaPairs)
-- TODO(verify): License
-- TODO(verify): Number of multi-interpretation vs single-answer examples
-
-### NQ-Open
-- TODO(verify): Hugging Face dataset ID
-- TODO(verify): Field names (expected: question, answer as list[str])
-- TODO(verify): License
-- TODO(verify): Total questions and overlap with AmbigQA (for deduplication)
-
-### CLAMBER
-- TODO(verify): GitHub repository URL and file format
-- TODO(verify): Fields: ambiguity flag, category taxonomy, gold clarifying question
-- TODO(verify): License
-- TODO(verify): Number of examples and splits (if any)
-
----
-
-## API Models
-
-### OpenAI GPT-4o-mini
-*(To be verified when first using OpenAI API)*
-
-- TODO(verify): Current model name string (e.g., "gpt-4o-mini" or "gpt-4o-mini-2024-07-18")
-- TODO(verify): Pricing (USD per 1M tokens, input and output)
-- TODO(verify): Whether logprobs are available for this model
-- TODO(verify): Context window size
-- TODO(verify): Rate limits
-
----
-
-## Experimental Results
-
-*(Results must be computed by our pipeline, never invented)*
-
-**All result tables in README and reports will be generated from:**
-- `results/runs/<run_id>/metrics.json`
-- `results/runs/<run_id>/predictions.jsonl`
-
-Until real runs complete, README states: **"Results pending"**
-
----
-
-## Hardware Measurements
-
-**Current Development Machine (measured 2024-11-23):**
-- GPU: NVIDIA GeForce RTX 5070, 8GB VRAM, CUDA 13.5
-- RAM: ~32 GB
-- Python: 3.11.9
-- PyTorch: (to be verified in Phase 2 after `make setup`)
-- Transformers: (to be verified in Phase 2)
-
-**Model Memory Measurements:**
-*(To be filled after Phase 4-5 when loading models)*
-
-| Model | Config | Memory (MB) | Latency (s/query) | Notes |
-|-------|--------|-------------|-------------------|-------|
-| Qwen2.5-1.5B fp16 | - | TODO | TODO | - |
-| Qwen2.5-3B fp16 | - | TODO | TODO | - |
-| Qwen2.5-3B 4-bit | - | TODO | TODO | - |
-| DeBERTa-large fp16 | - | TODO | TODO | - |
-
----
-
-## Package Versions
-
-*(To be recorded after `make setup` in Phase 1)*
-
-**Core ML Stack:**
-- torch: (pending)
-- transformers: (pending)
-- accelerate: (pending)
-- datasets: (pending)
-- bitsandbytes: (pending, if Windows-compatible)
-
----
-
-## Notes
-
-- This file is updated whenever we verify a fact by actually loading and inspecting an artifact
-- All TODO(verify) items will be resolved in the relevant phases
-- If a dataset schema differs from expectations, we adapt and document in DEVIATIONS.md
+## Experiments (TODO - Step 4)
+_To be run after Steps 1-3 complete_

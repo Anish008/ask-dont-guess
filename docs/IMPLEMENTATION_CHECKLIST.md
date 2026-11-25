@@ -235,19 +235,37 @@ Last updated: 2024-11-24, Phase 18 COMPLETE ✓
 ## Deviations from Spec
 See `docs/DEVIATIONS.md` (none yet)
 
-## Next Steps - CLI & Experiments Ready
+## Next Steps - After Step 1
 
-### CLI Implementation Complete
-- [x] analyze command - single query analysis with mock backends
-- [x] chat command - interactive multi-turn chat
-- [x] data build/verify commands - dataset pipeline structure
-- [x] experiment run/list-runs commands - experiment management
-- [x] report commands - already implemented in Phase 14
-- [x] Makefile targets - analyze, chat, data, experiment, api
-- [x] Test experiment config - dev_small.yaml
+### Step 1: Real Model Support ✓ COMPLETE
+- [x] Config loading fixed (config_dir path resolution)
+- [x] Qwen/Qwen2.5-1.5B-Instruct loaded successfully (~3GB, 5s load time)
+- [x] microsoft/deberta-large-mnli loaded successfully (~1.6GB, 30s load time)
+- [x] Ran inference on 3 curated examples (10 samples each)
+- [x] NLI scoring works (45 pairs per example)
+- [x] Clustering works (agglomerative algorithm)
+- [x] Findings documented in docs/VERIFIED_FACTS.md
+- [ ] **TODO**: Fix structured prompt format (models produce conversational text, not structured format)
 
-### Remaining TODOs
-1. Dataset verification (Phase 11) - verify AmbigQA, NQ-open, CLAMBER loaders
-2. Full baseline implementations (Phase 12) - complete ask_if_unclear, stated_confidence, etc.
-3. Real model support - load models from config, test with real HF backends
-4. Run experiments with real models to generate results
+### Step 2: Full Baseline Implementations (IN PROGRESS)
+Per user instructions - finish baselines with real models before datasets:
+- [ ] ask_if_unclear - Prompt-based with JSON output (TODO: full logic)
+- [ ] stated_confidence - Verbalized confidence 0-100 (TODO: full logic)
+- [ ] logprob_threshold - Mean token log-prob (TODO: full logic)
+- [ ] semantic_entropy - Discrete SE over meaning clusters (TODO: full clustering)
+- [ ] adg_core - ADG without interpretation channel (structure exists)
+- [ ] adg_ic - ADG with interpretation channel (structure exists)
+
+### Step 3: Dataset Verification (NEXT)
+- [ ] Load AmbigQA from HF (sewon/ambig_qa)
+- [ ] Load NQ-open from HF (google-research-datasets/nq_open)
+- [ ] Clone CLAMBER from GitHub (zt991211/CLAMBER)
+- [ ] Verify schemas and counts
+- [ ] Apply AmbigQA→NQ-open dedup
+- [ ] Record findings in VERIFIED_FACTS.md
+
+### Step 4: Run Experiments
+- [ ] Fix structured prompt format
+- [ ] Run dev_small.yaml with real models
+- [ ] Calibrate thresholds on calibration split
+- [ ] Generate reports

@@ -122,7 +122,7 @@ def load_config(
         >>> config = load_config("configs/base.yaml", overrides={"sampling.n_samples": 16})
     """
     config_path = Path(config_path)
-    config_dir = config_path.parent.parent  # configs/
+    config_dir = config_path.parent  # configs/ directory
 
     log.info("loading_config", path=str(config_path))
 
